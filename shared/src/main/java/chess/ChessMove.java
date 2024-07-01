@@ -43,11 +43,7 @@ public class ChessMove {
      * @return Type of piece to promote a pawn to, or null if no promotion
      */
     public ChessPiece.PieceType getPromotionPiece() {
-        if (promotionPiece == null) {
-            return promotionPiece;
-        } else {
-            return null;
-        }
+        return promotionPiece;
     }
 
     @Override
@@ -55,11 +51,11 @@ public class ChessMove {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessMove cm = (ChessMove) o;
-        return startPosition == cm.startPosition && endPosition == cm.endPosition;
+        return Objects.equals(startPosition, cm.startPosition) && Objects.equals(endPosition, cm.endPosition) && Objects.equals(promotionPiece, cm.promotionPiece);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(startPosition, endPosition);
+        return Objects.hash(startPosition, endPosition, promotionPiece);
     }
 }
