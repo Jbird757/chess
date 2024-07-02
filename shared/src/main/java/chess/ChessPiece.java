@@ -54,50 +54,57 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> moveList = new ArrayList<>();
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
 
         switch (this.type) {
             case KING:
-                moveList = kingMoves(board, myPosition);
+                moveList = kingMoves(board, myPosition, row, col);
+                break;
             case QUEEN:
-                return null;
+                break;
             case BISHOP:
-                return null;
+                break;
             case KNIGHT:
-                return null;
+                break;
             case ROOK:
-                return null;
+                break;
             case PAWN:
-                return null;
+                break;
         }
 
         return moveList;
     }
 
-    private Collection<ChessMove> kingMoves(ChessBoard board, ChessPosition myPosition) {
+    private Collection<ChessMove> kingMoves(ChessBoard board, ChessPosition myPosition, int row, int col) {
         Collection<ChessMove> kingMoveList = new ArrayList<>();
-        int row = myPosition.getRow();
-        int col = myPosition.getColumn();
         int[] spaces = {-1, 0, 1};
-
-
-
 
         for (int r: spaces) {
             for (int c: spaces) {
+                //Initialize new space
+                int trialRow = row+r;
+                int trialCol = col+c;
+                ChessPosition trialPosition = new ChessPosition(trialRow, trialCol);
+
                 // First check for range errors
-                if (row + r < 0 || row + r > 8 || col + c < 0 || col + c > 8) {
+                if ((trialRow) < 1 || (trialRow) > 8 || (trialCol) < 1 || (trialCol) > 8) {
                     continue;
                 }
+
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(myPosition) != null) {
+                if (board.getPiece(trialPosition) != null) {
+                    if (board.getPiece(trialPosition).getTeamColor() != this.getTeamColor()) {
+                        kingMoveList.add(new ChessMove(myPosition, trialPosition, null));
+                        continue;
+                    }
                     continue;
                 }
+
                 // If none of the above, is valid move
-                kingMoveList.add(new ChessMove(myPosition, new ChessPosition(row+r, col+c), null));
+                kingMoveList.add(new ChessMove(myPosition, trialPosition, null));
             }
         }
-
-
         return kingMoveList;
     }
 }
