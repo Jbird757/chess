@@ -64,6 +64,7 @@ public class ChessPiece {
             case QUEEN:
                 break;
             case BISHOP:
+                moveList = bishopMoves(board, myPosition, row, col);
                 break;
             case KNIGHT:
                 break;
@@ -211,5 +212,109 @@ public class ChessPiece {
             }
         }
         return rookMoveList;
+    }
+
+    private Collection<ChessMove> bishopMoves(ChessBoard board, ChessPosition myPosition, int row, int col) {
+        Collection<ChessMove> bishopMoveList = new ArrayList<>();
+        boolean isRightUpBlocked = false;
+        boolean isLeftUpBlocked = false;
+        boolean isRightDownBlocked = false;
+        boolean isLeftDownBlocked = false;
+
+        //Vertical and Horizontal
+        for (int i = 1; i <= 8; i++) {
+            //Right
+            if (!isRightUpBlocked) {
+                ChessPosition rightUpGuess = new ChessPosition(row+i, col+i);
+
+                // First check for range errors
+                if (col+i > 8 || row+i > 8) {
+                    isRightUpBlocked = true;
+                }
+
+                // Then check to see if there is a piece already on the square
+                if (board.getPiece(rightUpGuess) != null && !isRightUpBlocked) {
+                    if (board.getPiece(rightUpGuess).getTeamColor() != this.getTeamColor()) {
+                        bishopMoveList.add(new ChessMove(myPosition, rightUpGuess, null));
+                    }
+                    isRightUpBlocked = true;
+                }
+
+                // If none of the above, is valid move
+                if (!isRightUpBlocked) {
+                    bishopMoveList.add(new ChessMove(myPosition, rightUpGuess, null));
+                }
+            }
+
+            //Left
+            if (!isLeftUpBlocked) {
+                ChessPosition leftUpGuess = new ChessPosition(row-i, col+i);
+
+                // First check for range errors
+                if (col+i > 8 || row-i < 1) {
+                    isLeftUpBlocked = true;
+                }
+
+                // Then check to see if there is a piece already on the square
+                if (board.getPiece(leftUpGuess) != null && !isLeftUpBlocked) {
+                    if (board.getPiece(leftUpGuess).getTeamColor() != this.getTeamColor()) {
+                        bishopMoveList.add(new ChessMove(myPosition, leftUpGuess, null));
+                    }
+                    isLeftUpBlocked = true;
+                }
+
+                // If none of the above, is valid move
+                if (!isLeftUpBlocked) {
+                    bishopMoveList.add(new ChessMove(myPosition, leftUpGuess, null));
+                }
+            }
+
+            //Up
+            if (!isRightDownBlocked) {
+                ChessPosition rightDownGuess = new ChessPosition(row+i, col-i);
+
+                // First check for range errors
+                if (row+i > 8 || col-i < 1) {
+                    isRightDownBlocked = true;
+                }
+
+                // Then check to see if there is a piece already on the square
+                if (board.getPiece(rightDownGuess) != null && !isRightDownBlocked) {
+                    if (board.getPiece(rightDownGuess).getTeamColor() != this.getTeamColor()) {
+                        bishopMoveList.add(new ChessMove(myPosition, rightDownGuess, null));
+                    }
+                    isRightDownBlocked = true;
+                }
+
+                // If none of the above, is valid move
+                if (!isRightDownBlocked) {
+                    bishopMoveList.add(new ChessMove(myPosition, rightDownGuess, null));
+                }
+            }
+
+            //Down
+            if (!isLeftDownBlocked) {
+                ChessPosition downGuess = new ChessPosition(row-i, col-i);
+
+                // First check for range errors
+                if (row-i < 1 || col-i < 1) {
+                    isLeftDownBlocked = true;
+                }
+
+                // Then check to see if there is a piece already on the square
+                if (board.getPiece(downGuess) != null && !isLeftDownBlocked) {
+                    if (board.getPiece(downGuess).getTeamColor() != this.getTeamColor()) {
+                        bishopMoveList.add(new ChessMove(myPosition, downGuess, null));
+                    }
+                    isLeftDownBlocked = true;
+                }
+
+                // If none of the above, is valid move
+                if (!isLeftDownBlocked) {
+                    bishopMoveList.add(new ChessMove(myPosition, downGuess, null));
+                }
+            }
+        }
+        return bishopMoveList;
     }
 }
