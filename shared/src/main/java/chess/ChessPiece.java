@@ -62,6 +62,8 @@ public class ChessPiece {
                 moveList = kingMoves(board, myPosition, row, col);
                 break;
             case QUEEN:
+                moveList = bishopMoves(board, myPosition, row, col);
+                moveList.addAll(rookMoves(board, myPosition, row, col));
                 break;
             case BISHOP:
                 moveList = bishopMoves(board, myPosition, row, col);
@@ -190,7 +192,7 @@ public class ChessPiece {
 
             //Down
             if (!isDownBlocked) {
-                ChessPosition downGuess = new ChessPosition(row-1, col);
+                ChessPosition downGuess = new ChessPosition(row-i, col);
 
                 // First check for range errors
                 if (row-i < 1) {
@@ -221,9 +223,9 @@ public class ChessPiece {
         boolean isRightDownBlocked = false;
         boolean isLeftDownBlocked = false;
 
-        //Vertical and Horizontal
+        //Diagonal
         for (int i = 1; i <= 8; i++) {
-            //Right
+            //Right Up
             if (!isRightUpBlocked) {
                 ChessPosition rightUpGuess = new ChessPosition(row+i, col+i);
 
@@ -246,7 +248,7 @@ public class ChessPiece {
                 }
             }
 
-            //Left
+            //Left Up
             if (!isLeftUpBlocked) {
                 ChessPosition leftUpGuess = new ChessPosition(row-i, col+i);
 
@@ -269,7 +271,7 @@ public class ChessPiece {
                 }
             }
 
-            //Up
+            //Right Down
             if (!isRightDownBlocked) {
                 ChessPosition rightDownGuess = new ChessPosition(row+i, col-i);
 
@@ -292,7 +294,7 @@ public class ChessPiece {
                 }
             }
 
-            //Down
+            //Left Down
             if (!isLeftDownBlocked) {
                 ChessPosition downGuess = new ChessPosition(row-i, col-i);
 
