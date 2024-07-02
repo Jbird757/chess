@@ -69,6 +69,7 @@ public class ChessPiece {
                 moveList = bishopMoves(board, myPosition, row, col);
                 break;
             case KNIGHT:
+                moveList = knightMoves(board, myPosition, row, col);
                 break;
             case ROOK:
                 moveList = rookMoves(board, myPosition, row, col);
@@ -318,5 +319,43 @@ public class ChessPiece {
             }
         }
         return bishopMoveList;
+    }
+
+    private Collection<ChessMove> knightMoves(ChessBoard board, ChessPosition myPosition, int row, int col) {
+        Collection<ChessMove> knightMoveList = new ArrayList<>();
+        int[][] moves = {
+                {2, 1},
+                {1, 2},
+                {-1, 2},
+                {-2, 1},
+                {-2, -1},
+                {-1, -2},
+                {1, -2},
+                {2, -1}
+        };
+
+        for (int[] move : moves) {
+            int trialRow = row+move[0];
+            int trialCol = col+move[1];
+            ChessPosition trialPosition = new ChessPosition(trialRow, trialCol);
+
+            // First check for range errors
+            if ((trialRow) < 1 || (trialRow) > 8 || (trialCol) < 1 || (trialCol) > 8) {
+                continue;
+            }
+
+            // Then check to see if there is a piece already on the square
+            if (board.getPiece(trialPosition) != null) {
+                if (board.getPiece(trialPosition).getTeamColor() != this.getTeamColor()) {
+                    knightMoveList.add(new ChessMove(myPosition, trialPosition, null));
+                    continue;
+                }
+                continue;
+            }
+
+            // If none of the above, is valid move
+            knightMoveList.add(new ChessMove(myPosition, trialPosition, null));
+        }
+        return knightMoveList;
     }
 }
