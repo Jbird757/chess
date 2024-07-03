@@ -1,7 +1,9 @@
 package chess;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Represents a single chess piece
@@ -75,6 +77,7 @@ public class ChessPiece {
                 moveList = rookMoves(board, myPosition, row, col);
                 break;
             case PAWN:
+                moveList = pawnMoves(board, myPosition, row, col);
                 break;
         }
 
@@ -358,4 +361,149 @@ public class ChessPiece {
         }
         return knightMoveList;
     }
+
+    private Collection<ChessMove> pawnMoves(ChessBoard board, ChessPosition myPosition, int row, int col) {
+        Collection<ChessMove> pawnMoveList = new ArrayList<>();
+        boolean move1 = true;
+        boolean move2 = false;
+        boolean attackR = true;
+        boolean attackL = true;
+        boolean promote = false;
+
+        //White
+        if (this.getTeamColor() == ChessGame.TeamColor.WHITE) {
+            Collection<ChessPosition> possibleMoves = new ArrayList<>(Arrays.asList(
+                new ChessPosition(row+1, col),
+                new ChessPosition(row+2, col),
+                new ChessPosition(row+1, col+1),
+                new ChessPosition(row+1, col-1)
+            ));
+
+            if (row == 2) {
+                move2 = true;
+            }
+            if (row+1 == 8) {
+                promote = true;
+            }
+
+            for (ChessPosition move: possibleMoves) {
+                // First check for range errors
+                if (move.getColumn() < 1 || move.getColumn() > 8) {
+                    continue;
+                }
+
+                //Skip double move if not enabled
+                if (move.getRow() == row+2 && !move2) {
+                    continue;
+                }
+
+                // Then check to see if there is a piece already on the square
+                if (board.getPiece(move) != null) {
+                    if (board.getPiece(move).getTeamColor() != this.getTeamColor() && move.getColumn() != col) {
+                        if (promote) {
+                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
+                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
+                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
+                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
+                            continue;
+                        }
+                        pawnMoveList.add(new ChessMove(myPosition, move, null));
+                        continue;
+                    }
+                    continue;
+                } else {
+                    if (move.getColumn() != col) {
+                        continue;
+                    }
+                    if (move.getRow() == row+2 && board.getPiece(new ChessPosition(row+1, col)) != null) {
+                        continue;
+                    }
+                }
+                // If none of the above, is valid move. Promotions first
+                if (promote) {
+                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
+                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
+                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
+                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
+                    continue;
+                }
+                pawnMoveList.add(new ChessMove(myPosition, move, null));
+            }
+        }
+        else { //Black
+            Collection<ChessPosition> possibleMoves = new ArrayList<>(Arrays.asList(
+                    new ChessPosition(row-1, col),
+                    new ChessPosition(row-2, col),
+                    new ChessPosition(row-1, col-1),
+                    new ChessPosition(row-1, col+1)
+            ));
+
+            if (row == 7) {
+                move2 = true;
+            }
+            if (row-1 == 1) {
+                promote = true;
+            }
+
+            for (ChessPosition move: possibleMoves) {
+                // First check for range errors
+                if (move.getColumn() < 1 || move.getColumn() > 8) {
+                    continue;
+                }
+
+                //Skip double move if not enabled
+                if (move.getRow() == row-2 && !move2) {
+                    continue;
+                }
+
+                // Then check to see if there is a piece already on the square
+                if (board.getPiece(move) != null) {
+                    if (board.getPiece(move).getTeamColor() != this.getTeamColor() && move.getColumn() != col) {
+                        if (promote) {
+                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
+                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
+                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
+                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
+                            continue;
+                        }
+                        pawnMoveList.add(new ChessMove(myPosition, move, null));
+                        continue;
+                    }
+                    continue;
+                } else {
+                    if (move.getColumn() != col) {
+                        continue;
+                    }
+                    if (move.getRow() == row-2 && board.getPiece(new ChessPosition(row-1, col)) != null) {
+                        continue;
+                    }
+                }
+                // If none of the above, is valid move. Promotions first
+                if (promote) {
+                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
+                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
+                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
+                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
+                    continue;
+                }
+                pawnMoveList.add(new ChessMove(myPosition, move, null));
+            }
+        }
+        return pawnMoveList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessPiece that = (ChessPiece) o;
+        return pieceColor == that.pieceColor && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceColor, type);
+    }
+
+
 }
