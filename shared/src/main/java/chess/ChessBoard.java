@@ -2,6 +2,7 @@ package chess;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -53,7 +54,6 @@ public class ChessBoard {
         addPiece(new ChessPosition(1,5),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING));
         for (int i = 1; i <= 8; i++) {
             addPiece(new ChessPosition(2, i),new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN));
-            System.out.println("Pawn at column: "+i);
         }
 
         addPiece(new ChessPosition(8,1),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK));
@@ -66,8 +66,28 @@ public class ChessBoard {
         addPiece(new ChessPosition(8,5),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING));
         for (int i = 1; i <= 8; i++) {
             addPiece(new ChessPosition(7, i),new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN));
-            System.out.println("Pawn at column: "+i);
         }
+        this.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessBoard that = (ChessBoard) o;
+        return Objects.equals(pieceList, that.pieceList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(pieceList);
+    }
+
+    @Override
+    public String toString() {
+        return "ChessBoard{" +
+                "pieceList=" + pieceList +
+                '}';
     }
 }
 
