@@ -372,6 +372,7 @@ public class ChessPiece {
 
         //White
         if (this.getTeamColor() == ChessGame.TeamColor.WHITE) {
+            //List all possible moves, including captures
             Collection<ChessPosition> possibleMoves = new ArrayList<>(Arrays.asList(
                 new ChessPosition(row+1, col),
                 new ChessPosition(row+2, col),
@@ -400,6 +401,7 @@ public class ChessPiece {
                 // Then check to see if there is a piece already on the square
                 if (board.getPiece(move) != null) {
                     if (board.getPiece(move).getTeamColor() != this.getTeamColor() && move.getColumn() != col) {
+                        //If promoting
                         if (promote) {
                             pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
                             pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
@@ -407,14 +409,17 @@ public class ChessPiece {
                             pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
                             continue;
                         }
+                        //If not promoting
                         pawnMoveList.add(new ChessMove(myPosition, move, null));
                         continue;
                     }
                     continue;
-                } else {
+                } else { //If space is empty
+                    //Don't allow capture moves
                     if (move.getColumn() != col) {
                         continue;
                     }
+                    //If it's the double move, check to make sure the first space isn't blocked
                     if (move.getRow() == row+2 && board.getPiece(new ChessPosition(row+1, col)) != null) {
                         continue;
                     }
@@ -431,6 +436,7 @@ public class ChessPiece {
             }
         }
         else { //Black
+            //List of possible moves
             Collection<ChessPosition> possibleMoves = new ArrayList<>(Arrays.asList(
                     new ChessPosition(row-1, col),
                     new ChessPosition(row-2, col),
@@ -459,6 +465,7 @@ public class ChessPiece {
                 // Then check to see if there is a piece already on the square
                 if (board.getPiece(move) != null) {
                     if (board.getPiece(move).getTeamColor() != this.getTeamColor() && move.getColumn() != col) {
+                        //If Promoting
                         if (promote) {
                             pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
                             pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
@@ -466,14 +473,17 @@ public class ChessPiece {
                             pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
                             continue;
                         }
+                        //If not promoting
                         pawnMoveList.add(new ChessMove(myPosition, move, null));
                         continue;
                     }
                     continue;
-                } else {
+                } else { //If end space is free
+                    //Don't allow capture moves
                     if (move.getColumn() != col) {
                         continue;
                     }
+                    //If moving 2, make sure first space is free too
                     if (move.getRow() == row-2 && board.getPiece(new ChessPosition(row-1, col)) != null) {
                         continue;
                     }
