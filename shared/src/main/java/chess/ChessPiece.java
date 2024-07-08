@@ -364,10 +364,7 @@ public class ChessPiece {
 
     private Collection<ChessMove> pawnMoves(ChessBoard board, ChessPosition myPosition, int row, int col) {
         Collection<ChessMove> pawnMoveList = new ArrayList<>();
-        boolean move1 = true;
         boolean move2 = false;
-        boolean attackR = true;
-        boolean attackL = true;
         boolean promote = false;
 
         //White
