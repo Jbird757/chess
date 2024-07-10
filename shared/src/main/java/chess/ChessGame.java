@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -61,7 +62,16 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPiece pieceToMove = board.getPiece(move.getStartPosition());
+
+        if (pieceToMove == null || pieceToMove.getTeamColor() != teamTurn) {
+            throw new InvalidMoveException("Invalid move 1");
+        } else if (!pieceToMove.pieceMoves(board, move.getStartPosition()).contains(move)) {
+            throw new InvalidMoveException("Invalid move 2");
+        }
+
+        ChessPosition newPosition = move.getEndPosition();
+        //Update board lists, run isInCheck, if not, move is valid, if so, revert move and throw exception
     }
 
     /**
@@ -89,7 +99,7 @@ public class ChessGame {
             ChessPiece piece = entry.getValue();
             Collection<ChessMove> possibleMoves = piece.pieceMoves(board, entry.getKey());
             for (ChessMove move : possibleMoves) {
-                if (move.getEndPosition() == kingPosition) {
+                if (move.getEndPosition().equals(kingPosition)) {
                     isInCheck = true;
                 }
             }
@@ -107,8 +117,8 @@ public class ChessGame {
         Map<ChessPosition, ChessPiece> checkTeam = this.board.getTeamPieceLists(teamColor)[0];
         Map<ChessPosition, ChessPiece> otherTeam = this.board.getTeamPieceLists(teamColor)[1];
         ChessPosition kingPosition = null;
-        Collection<ChessMove> possibleEnemyMoves = null;
-        Collection<ChessMove> kingMoves = null;
+        Collection<ChessMove> possibleEnemyMoves = new ArrayList<>();
+        Collection<ChessMove> kingMoves = new ArrayList<>();
 
         //Run isInCheck, if false, return false
         if (!isInCheck(teamColor)) {
@@ -146,7 +156,6 @@ public class ChessGame {
             return false;
         }
 
-        //Check if any pieces from checkTeam can block check
         //Pretend to make a move, and then run isInCheck, if at any time isInCheck is false, return false
         return true;
     }
