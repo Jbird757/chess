@@ -12,7 +12,6 @@ public class ChessBoard {
     private ChessPiece[][] board = new ChessPiece[8][8];
 
     public ChessBoard() {
-        //resetBoard();
     }
 
     /**
@@ -33,8 +32,15 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        ChessPiece piece = board[position.getRow()-1][position.getColumn()-1];
-        return piece;
+        return board[position.getRow()-1][position.getColumn()-1];
+    }
+
+    public ChessPiece[][] getPieces() {
+        return board;
+    }
+
+    public void updateBoard(ChessPosition position, ChessPiece piece) {
+        board[position.getRow()-1][position.getColumn()-1] = piece;
     }
 
     public List<Map<ChessPosition, ChessPiece>> getTeamPieceLists(ChessGame.TeamColor color) {
@@ -45,7 +51,7 @@ public class ChessBoard {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (board[i][j] != null && board[i][j].getTeamColor() == color) {
-                    pieceLists.get(0).put(new ChessPosition(i+1, j+1), board[i][j]);
+                    pieceLists.getFirst().put(new ChessPosition(i+1, j+1), board[i][j]);
                 } else if (board[i][j] != null && board[i][j].getTeamColor() != color) {
                     pieceLists.get(1).put(new ChessPosition(i+1, j+1), board[i][j]);
                 }
@@ -93,7 +99,7 @@ public class ChessBoard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessBoard that = (ChessBoard) o;
-        return Objects.deepEquals(board, that.board);
+        return Arrays.deepEquals(board, that.board);
     }
 
     @Override
