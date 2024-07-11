@@ -80,14 +80,26 @@ public class ChessGame {
     public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPiece pieceToMove = this.board.getPiece(move.getStartPosition());
 
-        if (pieceToMove == null || pieceToMove.getTeamColor() != this.teamTurn) {
-            throw new InvalidMoveException("Invalid move 1");
-        } else if (!pieceToMove.pieceMoves(this.board, move.getStartPosition()).contains(move)) {
-            throw new InvalidMoveException("Invalid move 2");
+        if (pieceToMove == null) {
+            throw new InvalidMoveException("No piece on that square");
+        } else if (pieceToMove.getTeamColor() != this.teamTurn) {
+            throw new InvalidMoveException("It's the other team's turn");
+        } else if (!validMoves(move.getStartPosition()).contains(move)) {
+            throw new InvalidMoveException("Invalid Move");
         }
 
-        ChessPosition newPosition = move.getEndPosition();
-        //Update board lists, run isInCheck, if not, move is valid, if so, revert move and throw exception
+        if (move.getPromotionPiece() != null) {
+            this.board.updateBoard(move.getEndPosition(), new ChessPiece(pieceToMove.getTeamColor(), move.getPromotionPiece()));
+        } else {
+            this.board.updateBoard(move.getEndPosition(), pieceToMove);
+        }
+        this.board.updateBoard(move.getStartPosition(), null);
+
+        if (pieceToMove.getTeamColor() == TeamColor.WHITE) {
+            setTeamTurn(TeamColor.BLACK);
+        } else {
+            setTeamTurn(TeamColor.WHITE);
+            }
     }
 
     /**
