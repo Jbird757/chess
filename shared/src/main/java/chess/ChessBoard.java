@@ -37,15 +37,17 @@ public class ChessBoard {
         return piece;
     }
 
-    public Map<ChessPosition, ChessPiece>[] getTeamPieceLists(ChessGame.TeamColor color) {
-        Map<ChessPosition, ChessPiece>[] pieceLists = new Map[2];
+    public List<Map<ChessPosition, ChessPiece>> getTeamPieceLists(ChessGame.TeamColor color) {
+        List<Map<ChessPosition, ChessPiece>> pieceLists = new ArrayList<>();
+        pieceLists.add(new HashMap<>());
+        pieceLists.add(new HashMap<>());
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (board[i][j].getTeamColor() == color) {
-                    pieceLists[0].put(new ChessPosition(i+1, j+1), board[i][j]);
-                } else if (board[i][j].getTeamColor() != color && board[i][j] != null) {
-                    pieceLists[1].put(new ChessPosition(i+1, j+1), board[i][j]);
+                if (board[i][j] != null && board[i][j].getTeamColor() == color) {
+                    pieceLists.get(0).put(new ChessPosition(i+1, j+1), board[i][j]);
+                } else if (board[i][j] != null && board[i][j].getTeamColor() != color) {
+                    pieceLists.get(1).put(new ChessPosition(i+1, j+1), board[i][j]);
                 }
             }
         }

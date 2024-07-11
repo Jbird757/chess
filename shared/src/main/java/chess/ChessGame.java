@@ -91,8 +91,8 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        Map<ChessPosition, ChessPiece> checkTeam = this.board.getTeamPieceLists(teamColor)[0];
-        Map<ChessPosition, ChessPiece> otherTeam = this.board.getTeamPieceLists(teamColor)[1];
+        Map<ChessPosition, ChessPiece> checkTeam = this.board.getTeamPieceLists(teamColor).get(0);
+        Map<ChessPosition, ChessPiece> otherTeam = this.board.getTeamPieceLists(teamColor).get(1);
         ChessPosition kingPosition = null;
         boolean isInCheck = false;
 
@@ -124,8 +124,8 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        Map<ChessPosition, ChessPiece> checkTeam = this.board.getTeamPieceLists(teamColor)[0];
-        Map<ChessPosition, ChessPiece> otherTeam = this.board.getTeamPieceLists(teamColor)[1];
+        Map<ChessPosition, ChessPiece> checkTeam = this.board.getTeamPieceLists(teamColor).get(0);
+        Map<ChessPosition, ChessPiece> otherTeam = this.board.getTeamPieceLists(teamColor).get(1);
         ChessPosition kingPosition = null;
         Collection<ChessMove> possibleEnemyMoves = new ArrayList<>();
         Collection<ChessMove> kingMoves = new ArrayList<>();
@@ -171,7 +171,7 @@ public class ChessGame {
     }
 
     boolean canEscapeCheck(TeamColor teamColor) {
-        Map<ChessPosition, ChessPiece> checkTeam = this.board.getTeamPieceLists(teamColor)[0];
+        Map<ChessPosition, ChessPiece> checkTeam = this.board.getTeamPieceLists(teamColor).get(0);
         Map<ChessPosition, ChessPiece> checkTeamCopy = checkTeam;
         boolean escape = false;
 
