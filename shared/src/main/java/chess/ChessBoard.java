@@ -43,6 +43,8 @@ public class ChessBoard {
         board[position.getRow()-1][position.getColumn()-1] = piece;
     }
 
+
+    //Returns maps of both teams containing the position of the pieces and the piece that is on that position
     public List<Map<ChessPosition, ChessPiece>> getTeamPieceLists(ChessGame.TeamColor color) {
         List<Map<ChessPosition, ChessPiece>> pieceLists = new ArrayList<>();
         pieceLists.add(new HashMap<>());
