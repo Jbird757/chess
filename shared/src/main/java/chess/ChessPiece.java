@@ -135,7 +135,7 @@ public class ChessPiece {
                 }
 
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(rightGuess) != null && !isRightBlocked) {
+                if (!isRightBlocked && board.getPiece(rightGuess) != null) {
                     if (board.getPiece(rightGuess).getTeamColor() != this.getTeamColor()) {
                         rookMoveList.add(new ChessMove(myPosition, rightGuess, null));
                     }
@@ -158,7 +158,7 @@ public class ChessPiece {
                 }
 
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(leftGuess) != null && !isLeftBlocked) {
+                if (!isLeftBlocked && board.getPiece(leftGuess) != null) {
                     if (board.getPiece(leftGuess).getTeamColor() != this.getTeamColor()) {
                         rookMoveList.add(new ChessMove(myPosition, leftGuess, null));
                     }
@@ -181,7 +181,7 @@ public class ChessPiece {
                 }
 
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(upGuess) != null && !isUpBlocked) {
+                if (!isUpBlocked && board.getPiece(upGuess) != null) {
                     if (board.getPiece(upGuess).getTeamColor() != this.getTeamColor()) {
                         rookMoveList.add(new ChessMove(myPosition, upGuess, null));
                     }
@@ -204,7 +204,7 @@ public class ChessPiece {
                 }
 
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(downGuess) != null && !isDownBlocked) {
+                if (!isDownBlocked && board.getPiece(downGuess) != null) {
                     if (board.getPiece(downGuess).getTeamColor() != this.getTeamColor()) {
                         rookMoveList.add(new ChessMove(myPosition, downGuess, null));
                     }
@@ -239,7 +239,7 @@ public class ChessPiece {
                 }
 
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(rightUpGuess) != null && !isRightUpBlocked) {
+                if (!isRightUpBlocked && board.getPiece(rightUpGuess) != null) {
                     if (board.getPiece(rightUpGuess).getTeamColor() != this.getTeamColor()) {
                         bishopMoveList.add(new ChessMove(myPosition, rightUpGuess, null));
                     }
@@ -257,12 +257,12 @@ public class ChessPiece {
                 ChessPosition leftUpGuess = new ChessPosition(row-i, col+i);
 
                 // First check for range errors
-                if (col+i > 8 || row-i < 1) {
+                if ((col+i) > 8 || (row-i) < 1) {
                     isLeftUpBlocked = true;
                 }
 
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(leftUpGuess) != null && !isLeftUpBlocked) {
+                if (!isLeftUpBlocked && board.getPiece(leftUpGuess) != null) {
                     if (board.getPiece(leftUpGuess).getTeamColor() != this.getTeamColor()) {
                         bishopMoveList.add(new ChessMove(myPosition, leftUpGuess, null));
                     }
@@ -285,7 +285,7 @@ public class ChessPiece {
                 }
 
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(rightDownGuess) != null && !isRightDownBlocked) {
+                if (!isRightDownBlocked && board.getPiece(rightDownGuess) != null) {
                     if (board.getPiece(rightDownGuess).getTeamColor() != this.getTeamColor()) {
                         bishopMoveList.add(new ChessMove(myPosition, rightDownGuess, null));
                     }
@@ -308,7 +308,7 @@ public class ChessPiece {
                 }
 
                 // Then check to see if there is a piece already on the square
-                if (board.getPiece(downGuess) != null && !isLeftDownBlocked) {
+                if (!isLeftDownBlocked && board.getPiece(downGuess) != null) {
                     if (board.getPiece(downGuess).getTeamColor() != this.getTeamColor()) {
                         bishopMoveList.add(new ChessMove(myPosition, downGuess, null));
                     }

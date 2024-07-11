@@ -52,7 +52,17 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece pieceToMove = board.getPiece(startPosition);
+
+        if (pieceToMove == null) {
+            return null;
+        }
+
+        Collection<ChessMove> moves = pieceToMove.pieceMoves(board, startPosition);
+        for (ChessMove move : moves) {
+        }
+
+        return moves;
     }
 
     /**
@@ -142,7 +152,7 @@ public class ChessGame {
             }
         }
 
-        //For all kingMoves, see if those are a move an enemy could make
+        //For all kingMoves, see if new tiles are in check
         Collection<ChessMove> freeKingMoves = kingMoves;
         for (ChessMove move : kingMoves) {
             for (ChessMove enemyMove: possibleEnemyMoves) {
@@ -157,7 +167,27 @@ public class ChessGame {
         }
 
         //Pretend to make a move, and then run isInCheck, if at any time isInCheck is false, return false
-        return true;
+        return !canEscapeCheck(teamColor);
+    }
+
+    boolean canEscapeCheck(TeamColor teamColor) {
+        Map<ChessPosition, ChessPiece> checkTeam = this.board.getTeamPieceLists(teamColor)[0];
+        Map<ChessPosition, ChessPiece> checkTeamCopy = checkTeam;
+        boolean escape = false;
+
+        for (Map.Entry<ChessPosition, ChessPiece> entry: checkTeam.entrySet()) {
+            for (ChessMove move : entry.getValue().pieceMoves(board, entry.getKey())) {
+                checkTeamCopy.remove(entry.getKey());
+                checkTeamCopy.put(move.getEndPosition(), entry.getValue());
+                if (!isInCheck(teamColor)) {
+                    escape = true;
+                }
+                checkTeam.remove(move.getEndPosition());
+                checkTeam.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return escape;
     }
 
     /**
