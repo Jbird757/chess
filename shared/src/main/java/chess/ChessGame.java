@@ -56,12 +56,16 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece pieceToMove = this.board.getPiece(startPosition);
 
+        //If there is no piece, there are no valid moves
         if (pieceToMove == null) {
             return null;
         }
 
+        //Get normal moves from ChessPiece and make a copy
         Collection<ChessMove> moves = pieceToMove.pieceMoves(this.board, startPosition);
         Collection<ChessMove> validMoves = new ArrayList<>(moves);
+
+        //Iterate through moves and remove invalid moves
         for (ChessMove move : moves) {
             if (!testCheck(pieceToMove.getTeamColor(), pieceToMove, move)) {
                 validMoves.remove(move);
