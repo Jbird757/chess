@@ -1,5 +1,9 @@
 package server;
 
+import com.google.gson.Gson;
+import model.AuthData;
+import model.GameData;
+import model.UserData;
 import spark.*;
 
 public class Server {
@@ -10,6 +14,7 @@ public class Server {
         Spark.staticFiles.location("web");
 
         // Register your endpoints and handle exceptions here.
+        Spark.post("/user", this::createUser);
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
         Spark.init();
@@ -21,5 +26,11 @@ public class Server {
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
+    }
+
+    private Object createUser(Request req, Response res) {
+        var user = new Gson().fromJson(req.body(), UserData.class);
+        user = service.registerUser(user);
+        return new Gson().toJson(user);
     }
 }
