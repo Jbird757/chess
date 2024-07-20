@@ -15,7 +15,7 @@ public class RegisterHandler {
     public Object registerUser(Request req, Response res) {
         UserService userService = new UserService();
         var user = new Gson().fromJson(req.body(), UserData.class);
-        AuthData userAuth = new AuthData(null, null);
+        AuthData userAuth;
         try {
             userAuth = userService.registerUser(user);
         } catch (BadRequestException e) {

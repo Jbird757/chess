@@ -1,31 +1,31 @@
 package dataaccess;
 
+import com.google.gson.Gson;
 import dataaccess.Exceptions.AlreadyTakenException;
+import dataaccess.Exceptions.BadRequestException;
 import model.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MemoryUserDAO implements UserDAO {
     private static List<UserData> users = new ArrayList<>();
 
     @Override
-    public UserData getUser(UserData user) throws DataAccessException {
+    public UserData getUser(String username) {
         for (UserData userData : users) {
-            if (user.equals(userData)) {
-                throw new AlreadyTakenException("Error: already taken");
+            if (Objects.equals(username, userData.username())) {
+                return userData;
             }
         }
         return null;
     }
 
     @Override
-    public void addUser(UserData user) throws DataAccessException {
-        if (users.contains(user)) {
-            throw new AlreadyTakenException("Error: already taken");
-        } else {
-            users.add(user);
-        }
+    public UserData createUser(UserData user) throws DataAccessException {
+        users.add(user);
+        return user;
     }
 
     @Override
