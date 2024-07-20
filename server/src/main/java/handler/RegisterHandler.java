@@ -2,6 +2,8 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
+import dataaccess.Exceptions.AlreadyTakenException;
+import dataaccess.Exceptions.BadRequestException;
 import model.AuthData;
 import model.UserData;
 import service.UserService;
@@ -16,8 +18,15 @@ public class RegisterHandler {
         AuthData userAuth = new AuthData(null, null);
         try {
             userAuth = userService.registerUser(user);
-        } catch (DataAccessException e) {
+        } catch (BadRequestException e) {
+            res.status(400);
+            return new Gson().toJson("{message: "+e.getMessage()+"}");
+        } catch (AlreadyTakenException e) {
             res.status(403);
+            return new Gson().toJson("{message: "+e.getMessage()+"}");
+        } catch (DataAccessException e) {
+            res.status(500);
+            return new Gson().toJson("{message: "+e.getMessage()+"}");
         }
 
         res.status(200);

@@ -1,5 +1,6 @@
 package dataaccess;
 
+import dataaccess.Exceptions.AlreadyTakenException;
 import model.UserData;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class MemoryUserDAO implements UserDAO {
     public UserData getUser(UserData user) throws DataAccessException {
         for (UserData userData : users) {
             if (user.equals(userData)) {
-                throw new DataAccessException("Error: already taken");
+                throw new AlreadyTakenException("Error: already taken");
             }
         }
         return null;
@@ -21,7 +22,7 @@ public class MemoryUserDAO implements UserDAO {
     @Override
     public void addUser(UserData user) throws DataAccessException {
         if (users.contains(user)) {
-            throw new DataAccessException("Error: already taken");
+            throw new AlreadyTakenException("Error: already taken");
         } else {
             users.add(user);
         }
