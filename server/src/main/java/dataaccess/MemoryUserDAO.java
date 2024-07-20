@@ -9,10 +9,10 @@ public class MemoryUserDAO implements UserDAO {
     private static List<UserData> users = new ArrayList<>();
 
     @Override
-    public UserData getUser(UserData user) {
+    public UserData getUser(UserData user) throws DataAccessException {
         for (UserData userData : users) {
             if (user.equals(userData)) {
-                return userData;
+                throw new DataAccessException("Error: already taken");
             }
         }
         return null;
