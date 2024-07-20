@@ -27,6 +27,7 @@ public class MemoryUserDAO implements UserDAO {
         }
     }
 
+    @Override
     public void clearUserDB() {
         users.clear();
     }
