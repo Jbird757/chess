@@ -24,13 +24,16 @@ public class LoginHandler {
             userAuth = userService.loginUser(user);
         } catch (BadRequestException e) {
             res.status(400);
-            return new Gson().toJson("{message: "+e.getMessage()+"}");
+            ErrorMessage message = new ErrorMessage(e.getMessage());
+            return new Gson().toJson(message);
         } catch (UnauthorizedException e) {
             res.status(401);
-            return new Gson().toJson("{message: "+e.getMessage()+"}");
+            ErrorMessage message = new ErrorMessage(e.getMessage());
+            return new Gson().toJson(message);
         } catch (DataAccessException e) {
             res.status(500);
-            return new Gson().toJson("{message: "+e.getMessage()+"}");
+            ErrorMessage message = new ErrorMessage(e.getMessage());
+            return new Gson().toJson(message);
         }
 
         res.status(200);

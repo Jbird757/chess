@@ -45,7 +45,7 @@ public class UserService {
         MemoryAuthDAO authDAO = new MemoryAuthDAO();
         UserData loginUser = userDAO.getUser(user.username());
         if (loginUser == null) {
-            throw new DataAccessException("Error: user not found");
+            throw new UnauthorizedException("Error: unauthorized");
         }
 
         if (loginUser.password().equals(user.password())) {
@@ -55,5 +55,20 @@ public class UserService {
         }
 
         throw new UnauthorizedException("Error: unauthorized");
+    }
+
+    public void logoutUser(AuthData auth) throws DataAccessException {
+        if (auth.authToken() == null) {
+            throw new UnauthorizedException("Error: unauthorized");
+        }
+
+        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        AuthData authy = authDAO.getAuth(auth.authToken());
+
+        if (authy == null) {
+            throw new UnauthorizedException("Error: unauthorized");
+        }
+
+        authDAO.deleteAuth(auth.authToken());
     }
 }
