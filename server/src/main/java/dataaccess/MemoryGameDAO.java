@@ -21,6 +21,11 @@ public class MemoryGameDAO implements GameDAO {
     }
 
     @Override
+    public List<GameData> getAllGames() {
+        return games;
+    }
+
+    @Override
     public GameData createGame(GameData game) {
         int gameID;
         if (games.isEmpty()) {
@@ -41,7 +46,7 @@ public class MemoryGameDAO implements GameDAO {
 
             }
         }
-        return games.get(game.gameID());
+        return game;
     }
 
     @Override

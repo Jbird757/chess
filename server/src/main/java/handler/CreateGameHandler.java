@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import dataaccess.DataAccessException;
 import dataaccess.Exceptions.BadRequestException;
 import dataaccess.Exceptions.UnauthorizedException;
-import model.AuthData;
 import model.GameData;
 import service.GameService;
-import service.UserService;
 import spark.Request;
 import spark.Response;
 
@@ -38,6 +36,5 @@ public class CreateGameHandler {
 
         res.status(200);
         return new Gson().toJson(game);
-
     }
 }
