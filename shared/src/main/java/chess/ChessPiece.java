@@ -130,9 +130,7 @@ public class ChessPiece {
                 ChessPosition rightGuess = new ChessPosition(row, col+i);
 
                 // First check for range errors
-                if (col+i > 8) {
-                    isRightBlocked = true;
-                }
+                if (col+i > 8) {isRightBlocked = true;}
 
                 // Then check to see if there is a piece already on the square
                 if (!isRightBlocked && board.getPiece(rightGuess) != null) {
@@ -153,9 +151,7 @@ public class ChessPiece {
                 ChessPosition leftGuess = new ChessPosition(row, col-i);
 
                 // First check for range errors
-                if (col-i < 1) {
-                    isLeftBlocked = true;
-                }
+                if (col-i < 1) {isLeftBlocked = true;}
 
                 // Then check to see if there is a piece already on the square
                 if (!isLeftBlocked && board.getPiece(leftGuess) != null) {
@@ -176,9 +172,7 @@ public class ChessPiece {
                 ChessPosition upGuess = new ChessPosition(row+i, col);
 
                 // First check for range errors
-                if (row+i > 8) {
-                    isUpBlocked = true;
-                }
+                if (row+i > 8) {isUpBlocked = true;}
 
                 // Then check to see if there is a piece already on the square
                 if (!isUpBlocked && board.getPiece(upGuess) != null) {
@@ -199,9 +193,7 @@ public class ChessPiece {
                 ChessPosition downGuess = new ChessPosition(row-i, col);
 
                 // First check for range errors
-                if (row-i < 1) {
-                    isDownBlocked = true;
-                }
+                if (row-i < 1) {isDownBlocked = true;}
 
                 // Then check to see if there is a piece already on the square
                 if (!isDownBlocked && board.getPiece(downGuess) != null) {
@@ -234,9 +226,7 @@ public class ChessPiece {
                 ChessPosition rightUpGuess = new ChessPosition(row+i, col+i);
 
                 // First check for range errors
-                if (col+i > 8 || row+i > 8) {
-                    isRightUpBlocked = true;
-                }
+                if (col+i > 8 || row+i > 8) {isRightUpBlocked = true;}
 
                 // Then check to see if there is a piece already on the square
                 if (!isRightUpBlocked && board.getPiece(rightUpGuess) != null) {
@@ -280,9 +270,7 @@ public class ChessPiece {
                 ChessPosition rightDownGuess = new ChessPosition(row+i, col-i);
 
                 // First check for range errors
-                if (row+i > 8 || col-i < 1) {
-                    isRightDownBlocked = true;
-                }
+                if (row+i > 8 || col-i < 1) {isRightDownBlocked = true;}
 
                 // Then check to see if there is a piece already on the square
                 if (!isRightDownBlocked && board.getPiece(rightDownGuess) != null) {
@@ -303,9 +291,7 @@ public class ChessPiece {
                 ChessPosition downGuess = new ChessPosition(row-i, col-i);
 
                 // First check for range errors
-                if (row-i < 1 || col-i < 1) {
-                    isLeftDownBlocked = true;
-                }
+                if (row-i < 1 || col-i < 1) {isLeftDownBlocked = true;}
 
                 // Then check to see if there is a piece already on the square
                 if (!isLeftDownBlocked && board.getPiece(downGuess) != null) {
@@ -376,7 +362,6 @@ public class ChessPiece {
                 new ChessPosition(row+1, col+1),
                 new ChessPosition(row+1, col-1)
             ));
-
             if (row == 2) {
                 move2 = true;
             }
@@ -386,15 +371,9 @@ public class ChessPiece {
 
             for (ChessPosition move: possibleMoves) {
                 // First check for range errors
-                if (move.getColumn() < 1 || move.getColumn() > 8) {
-                    continue;
-                }
-
+                if (move.getColumn() < 1 || move.getColumn() > 8) {continue;}
                 //Skip double move if not enabled
-                if (move.getRow() == row+2 && !move2) {
-                    continue;
-                }
-
+                if (move.getRow() == row+2 && !move2) {continue;}
                 // Then check to see if there is a piece already on the square
                 if (board.getPiece(move) != null) {
                     if (board.getPiece(move).getTeamColor() != this.getTeamColor() && move.getColumn() != col) {
@@ -405,13 +384,9 @@ public class ChessPiece {
                     continue;
                 } else { //If space is empty
                     //Don't allow capture moves
-                    if (move.getColumn() != col) {
-                        continue;
-                    }
+                    if (move.getColumn() != col) {continue;}
                     //If it's the double move, check to make sure the first space isn't blocked
-                    if (move.getRow() == row+2 && board.getPiece(new ChessPosition(row+1, col)) != null) {
-                        continue;
-                    }
+                    if (move.getRow() == row+2 && board.getPiece(new ChessPosition(row+1, col)) != null) {continue;}
                 }
                 // If none of the above, is valid move. Promotions first
                 promote(myPosition, pawnMoveList, promote, move);
@@ -425,7 +400,6 @@ public class ChessPiece {
                     new ChessPosition(row-1, col-1),
                     new ChessPosition(row-1, col+1)
             ));
-
             if (row == 7) {
                 move2 = true;
             }
@@ -435,15 +409,9 @@ public class ChessPiece {
 
             for (ChessPosition move: possibleMoves) {
                 // First check for range errors
-                if (move.getColumn() < 1 || move.getColumn() > 8) {
-                    continue;
-                }
-
+                if (move.getColumn() < 1 || move.getColumn() > 8) {continue;}
                 //Skip double move if not enabled
-                if (move.getRow() == row-2 && !move2) {
-                    continue;
-                }
-
+                if (move.getRow() == row-2 && !move2) {continue;}
                 // Then check to see if there is a piece already on the square
                 if (board.getPiece(move) != null) {
                     if (board.getPiece(move).getTeamColor() != this.getTeamColor() && move.getColumn() != col) {
@@ -454,13 +422,9 @@ public class ChessPiece {
                     continue;
                 } else { //If end space is free
                     //Don't allow capture moves
-                    if (move.getColumn() != col) {
-                        continue;
-                    }
+                    if (move.getColumn() != col) {continue;}
                     //If moving 2, make sure first space is free too
-                    if (move.getRow() == row-2 && board.getPiece(new ChessPosition(row-1, col)) != null) {
-                        continue;
-                    }
+                    if (move.getRow() == row-2 && board.getPiece(new ChessPosition(row-1, col)) != null) {continue;}
                 }
                 // If none of the above, is valid move. Promotions first
                 promote(myPosition, pawnMoveList, promote, move);
