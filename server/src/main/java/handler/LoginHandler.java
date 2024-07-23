@@ -18,7 +18,6 @@ public class LoginHandler {
         UserService userService = new UserService();
         var user = new Gson().fromJson(req.body(), UserData.class);
         AuthData userAuth;
-        Set<String> headers = req.headers();
 
         try {
             userAuth = userService.loginUser(user);

@@ -37,6 +37,7 @@ public class LogoutHandler {
         }
 
         res.status(200);
-        return new Gson().toJson(userAuth);
+        res.body("{}");
+        return res.body();
     }
 }

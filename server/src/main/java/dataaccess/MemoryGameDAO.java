@@ -5,6 +5,7 @@ import model.GameData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MemoryGameDAO implements GameDAO {
     private static List<GameData> games = new ArrayList<GameData>();
@@ -21,8 +22,15 @@ public class MemoryGameDAO implements GameDAO {
 
     @Override
     public GameData createGame(GameData game) {
-       games.add(game);
-       return game;
+        int gameID;
+        if (games.isEmpty()) {
+            gameID = 1;
+        } else {
+            gameID = games.getLast().gameID() + 1;
+        }
+        GameData newGame = new GameData(gameID, null, null, game.gameName(), null);
+       games.add(newGame);
+        return new GameData(gameID, null, null, null, null);
     }
 
     @Override
