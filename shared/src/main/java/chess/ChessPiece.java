@@ -399,15 +399,7 @@ public class ChessPiece {
                 if (board.getPiece(move) != null) {
                     if (board.getPiece(move).getTeamColor() != this.getTeamColor() && move.getColumn() != col) {
                         //If promoting
-                        if (promote) {
-                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
-                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
-                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
-                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
-                            continue;
-                        }
-                        //If not promoting
-                        pawnMoveList.add(new ChessMove(myPosition, move, null));
+                        promote(myPosition, pawnMoveList, promote, move);
                         continue;
                     }
                     continue;
@@ -422,14 +414,7 @@ public class ChessPiece {
                     }
                 }
                 // If none of the above, is valid move. Promotions first
-                if (promote) {
-                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
-                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
-                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
-                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
-                    continue;
-                }
-                pawnMoveList.add(new ChessMove(myPosition, move, null));
+                promote(myPosition, pawnMoveList, promote, move);
             }
         }
         else { //Black
@@ -463,15 +448,7 @@ public class ChessPiece {
                 if (board.getPiece(move) != null) {
                     if (board.getPiece(move).getTeamColor() != this.getTeamColor() && move.getColumn() != col) {
                         //If Promoting
-                        if (promote) {
-                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
-                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
-                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
-                            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
-                            continue;
-                        }
-                        //If not promoting
-                        pawnMoveList.add(new ChessMove(myPosition, move, null));
+                        promote(myPosition, pawnMoveList, promote, move);
                         continue;
                     }
                     continue;
@@ -486,17 +463,21 @@ public class ChessPiece {
                     }
                 }
                 // If none of the above, is valid move. Promotions first
-                if (promote) {
-                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
-                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
-                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
-                    pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
-                    continue;
-                }
-                pawnMoveList.add(new ChessMove(myPosition, move, null));
+                promote(myPosition, pawnMoveList, promote, move);
             }
         }
         return pawnMoveList;
+    }
+
+    private void promote(ChessPosition myPosition, Collection<ChessMove> pawnMoveList, boolean promote, ChessPosition move) {
+        if (promote) {
+            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.KNIGHT));
+            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.QUEEN));
+            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.BISHOP));
+            pawnMoveList.add(new ChessMove(myPosition, move, PieceType.ROOK));
+            return;
+        }
+        pawnMoveList.add(new ChessMove(myPosition, move, null));
     }
 
     @Override
@@ -511,6 +492,4 @@ public class ChessPiece {
     public int hashCode() {
         return Objects.hash(pieceColor, type);
     }
-
-
 }

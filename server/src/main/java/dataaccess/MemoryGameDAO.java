@@ -50,11 +50,6 @@ public class MemoryGameDAO implements GameDAO {
     }
 
     @Override
-    public void deleteGame(int id) {
-        games.removeIf(gameData -> gameData.gameID() == id);
-    }
-
-    @Override
     public void clearGameDB() {
         games.clear();
     }

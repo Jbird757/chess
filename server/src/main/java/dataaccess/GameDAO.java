@@ -9,6 +9,5 @@ public interface GameDAO {
     public List<GameData> getAllGames();
     public GameData createGame(GameData game);
     public GameData updateGame(GameData game);
-    public void deleteGame(int id);
     public void clearGameDB();
 }
