@@ -1,8 +1,5 @@
 package dataaccess;
 
-import com.google.gson.Gson;
-import dataaccess.Exceptions.AlreadyTakenException;
-import dataaccess.Exceptions.BadRequestException;
 import model.UserData;
 
 import java.util.ArrayList;
@@ -23,9 +20,8 @@ public class MemoryUserDAO implements UserDAO {
     }
 
     @Override
-    public UserData createUser(UserData user) throws DataAccessException {
+    public void createUser(UserData user) throws DataAccessException {
         users.add(user);
-        return user;
     }
 
     @Override

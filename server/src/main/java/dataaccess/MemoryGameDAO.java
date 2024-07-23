@@ -1,11 +1,9 @@
 package dataaccess;
 
-import dataaccess.Exceptions.BadRequestException;
 import model.GameData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class MemoryGameDAO implements GameDAO {
     private static List<GameData> games = new ArrayList<GameData>();
@@ -33,17 +31,19 @@ public class MemoryGameDAO implements GameDAO {
         } else {
             gameID = games.getLast().gameID() + 1;
         }
+
+        //Get data from input, create new game, and return only the gameID
         GameData newGame = new GameData(gameID, null, null, game.gameName(), null);
-       games.add(newGame);
+        games.add(newGame);
         return new GameData(gameID, null, null, null, null);
     }
 
     @Override
     public GameData updateGame(GameData game) {
+        //Iterate through games, find the matching gameID, and update it
         for (int i = 0; i < games.size(); i++) {
             if (games.get(i).gameID() == game.gameID()) {
                 games.set(i, game);
-
             }
         }
         return game;

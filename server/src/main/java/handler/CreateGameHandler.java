@@ -2,14 +2,12 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.DataAccessException;
-import dataaccess.Exceptions.BadRequestException;
-import dataaccess.Exceptions.UnauthorizedException;
+import dataaccess.exceptions.BadRequestException;
+import dataaccess.exceptions.UnauthorizedException;
 import model.GameData;
 import service.GameService;
 import spark.Request;
 import spark.Response;
-
-import java.util.Set;
 
 public class CreateGameHandler {
 
