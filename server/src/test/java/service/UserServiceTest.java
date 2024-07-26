@@ -8,7 +8,7 @@ class UserServiceTest {
 
     @Test
     void createNewNormalUser() {
-        
+
     }
 
 }
