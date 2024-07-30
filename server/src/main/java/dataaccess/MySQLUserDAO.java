@@ -4,6 +4,9 @@ import model.UserData;
 
 import java.sql.SQLException;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static java.sql.Types.NULL;
+
 public class MySQLUserDAO implements UserDAO {
 
     public MySQLUserDAO() throws DataAccessException {
@@ -11,7 +14,7 @@ public class MySQLUserDAO implements UserDAO {
     }
 
     @Override
-    public UserData getUser(String username) {
+    public UserData getUser(String username) throws DataAccessException {
         return null;
     }
 
@@ -21,8 +24,23 @@ public class MySQLUserDAO implements UserDAO {
     }
 
     @Override
-    public void clearUserDB() {
+    public void clearUserDB() throws DataAccessException {
 
+    }
+
+    private void updateDatabase(String statement, Object... args) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
+                for (var i = 0; i < args.length; i++) {
+                    var param = args[i];
+                    if (param instanceof String p) ps.setString(i + 1, p);
+                    else if (param == null) ps.setNull(i + 1, NULL);
+                }
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
+        }
     }
 
     private final String[] createStatements = {
