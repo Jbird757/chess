@@ -15,28 +15,31 @@ public class MySQLGameDAO implements GameDAO {
     }
 
     @Override
-    public GameData getGame(int id) {
+    public GameData getGame(int id) throws DataAccessException {
         return null;
     }
 
     @Override
-    public List<GameData> getAllGames() {
+    public List<GameData> getAllGames() throws DataAccessException {
         return List.of();
     }
 
     @Override
-    public GameData createGame(GameData game) {
+    public GameData createGame(GameData game) throws DataAccessException {
+        var statement = "INSERT INTO gamedata (whiteUsername, blackUsername, gameName, game) VALUES (?, ?, ?, ?)";
+        updateDatabase(statement, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
+        return game;
+    }
+
+    @Override
+    public GameData updateGame(GameData game) throws DataAccessException {
         return null;
     }
 
     @Override
-    public GameData updateGame(GameData game) {
-        return null;
-    }
-
-    @Override
-    public void clearGameDB() {
-
+    public void clearGameDB() throws DataAccessException {
+        var statement = "TRUNCATE TABLE gamedata";
+        updateDatabase(statement);
     }
 
     private void updateDatabase(String statement, Object... args) throws DataAccessException {
