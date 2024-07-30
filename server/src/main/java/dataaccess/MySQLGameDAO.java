@@ -2,10 +2,10 @@ package dataaccess;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
-import model.AuthData;
 import model.GameData;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
@@ -38,7 +38,21 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public List<GameData> getAllGames() throws DataAccessException {
-        return List.of();
+        var games = new ArrayList<GameData>();
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT gameId, blackUsername, whiteUsername, gameName, game FROM gamedata";
+            try (var ps = conn.prepareStatement(statement)) {
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        games.add(new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
+                                rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class)));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new DataAccessException(String.format("Unable to read data: %s", e.getMessage()));
+        }
+        return games;
     }
 
     @Override
@@ -50,7 +64,9 @@ public class MySQLGameDAO implements GameDAO {
 
     @Override
     public GameData updateGame(GameData game) throws DataAccessException {
-        return null;
+        var statement = "UPDATE gamedata SET whiteUsername = ?, blackUsername = ?, gameName = ?, game = ? WHERE gameId=?";
+        updateDatabase(statement, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game(), game.gameID());
+        return getGame(game.gameID());
     }
 
     @Override
