@@ -5,6 +5,9 @@ import model.GameData;
 import java.sql.SQLException;
 import java.util.List;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static java.sql.Types.NULL;
+
 public class MySQLGameDAO implements GameDAO {
 
     public MySQLGameDAO() throws DataAccessException {
@@ -34,6 +37,21 @@ public class MySQLGameDAO implements GameDAO {
     @Override
     public void clearGameDB() {
 
+    }
+
+    private void updateDatabase(String statement, Object... args) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()) {
+            try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
+                for (var i = 0; i < args.length; i++) {
+                    var param = args[i];
+                    if (param instanceof String p) ps.setString(i + 1, p);
+                    else if (param == null) ps.setNull(i + 1, NULL);
+                }
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
+        }
     }
 
     private final String[] createStatements = {
