@@ -51,7 +51,8 @@ public class UserService {
         if (loginUser.password().equals(user.password())) {
             String authToken = UUID.randomUUID().toString();
             AuthData auth = new AuthData(user.username(), authToken);
-            return authDAO.createAuth(auth);
+            AuthData returnedAuth = authDAO.createAuth(auth);
+            return returnedAuth;
         }
 
         throw new UnauthorizedException("Error: unauthorized");

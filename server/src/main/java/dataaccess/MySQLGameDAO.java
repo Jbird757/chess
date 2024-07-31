@@ -32,15 +32,15 @@ public class MySQLGameDAO implements GameDAO {
     @Override
     public GameData getGame(int id) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT gameId, blackUsername, whiteUsername, gameName, game FROM gamedata WHERE gameId=?";
+            var statement = "SELECT gameId, whiteUsername, blackUsername, gameName, game FROM gamedata WHERE gameId=?";
             try (var ps = conn.prepareStatement(statement)) {
                 ps.setInt(1, id);
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
                         return new GameData(
                                 rs.getInt("gameId"),
-                                rs.getString("blackUsername"),
                                 rs.getString("whiteUsername"),
+                                rs.getString("blackUsername"),
                                 rs.getString("gameName"),
                                 new Gson().fromJson(rs.getString("game"), ChessGame.class));
                     }
@@ -56,7 +56,7 @@ public class MySQLGameDAO implements GameDAO {
     public List<GameData> getAllGames() throws DataAccessException {
         var games = new ArrayList<GameData>();
         try (var conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT gameId, blackUsername, whiteUsername, gameName, game FROM gamedata";
+            var statement = "SELECT gameId, whiteUsername, blackUsername, gameName, game FROM gamedata";
             try (var ps = conn.prepareStatement(statement)) {
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
