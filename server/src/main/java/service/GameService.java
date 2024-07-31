@@ -1,12 +1,9 @@
 package service;
 
-import dataaccess.DataAccessException;
+import dataaccess.*;
 import dataaccess.exceptions.AlreadyTakenException;
 import dataaccess.exceptions.BadRequestException;
 import dataaccess.exceptions.UnauthorizedException;
-import dataaccess.GameDAO;
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryGameDAO;
 import handler.JoinGameModel;
 import model.AuthData;
 import model.GameData;
@@ -17,7 +14,7 @@ import java.util.Objects;
 public class GameService {
 
     public List<GameData> getAllGames(String authToken) throws DataAccessException {
-        GameDAO gameDAO = new MemoryGameDAO();
+        GameDAO gameDAO = new MySQLGameDAO();
 
         //Check if auth exists
         if (authToken == null) {
@@ -36,7 +33,7 @@ public class GameService {
     }
 
     public GameData createGame(GameData gameData, String authToken) throws DataAccessException {
-        GameDAO gameDAO = new MemoryGameDAO();
+        GameDAO gameDAO = new MySQLGameDAO();
 
         //Check input formatting
         if (authToken == null) {
@@ -57,7 +54,7 @@ public class GameService {
     }
 
     public void joinGame(JoinGameModel gameData, String authToken) throws DataAccessException {
-        GameDAO gameDAO = new MemoryGameDAO();
+        GameDAO gameDAO = new MySQLGameDAO();
 
         //Check input formatting
         if (authToken == null) {

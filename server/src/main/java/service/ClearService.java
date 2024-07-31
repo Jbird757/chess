@@ -1,15 +1,14 @@
 package service;
 
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryGameDAO;
-import dataaccess.MemoryUserDAO;
+import dataaccess.*;
+import handler.ErrorMessage;
 
 public class ClearService {
 
-    public void clear() {
-        MemoryUserDAO userDAO = new MemoryUserDAO();
-        MemoryGameDAO gameDAO = new MemoryGameDAO();
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+    public void clear() throws DataAccessException {
+        MySQLUserDAO userDAO = new MySQLUserDAO();
+        MySQLGameDAO gameDAO = new MySQLGameDAO();
+        MySQLAuthDAO authDAO = new MySQLAuthDAO();
         userDAO.clearUserDB();
         gameDAO.clearGameDB();
         authDAO.clearAuthDB();
