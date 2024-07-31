@@ -8,6 +8,7 @@ import dataaccess.MySQLAuthDAO;
 import dataaccess.MySQLUserDAO;
 import model.AuthData;
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.UUID;
 
@@ -27,8 +28,11 @@ public class UserService {
             throw new AlreadyTakenException("Error: already taken");
         }
 
+        String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
+        UserData userHashed = new UserData(user.username(), hashedPassword, user.email());
+
         //Create user in User DB
-        userDAO.createUser(user);
+        userDAO.createUser(userHashed);
 
         //Create auth for user
         String authToken = UUID.randomUUID().toString();
@@ -48,11 +52,10 @@ public class UserService {
             throw new UnauthorizedException("Error: unauthorized");
         }
 
-        if (loginUser.password().equals(user.password())) {
+        if (BCrypt.checkpw(user.password(), loginUser.password())) {
             String authToken = UUID.randomUUID().toString();
             AuthData auth = new AuthData(user.username(), authToken);
-            AuthData returnedAuth = authDAO.createAuth(auth);
-            return returnedAuth;
+            return authDAO.createAuth(auth);
         }
 
         throw new UnauthorizedException("Error: unauthorized");
