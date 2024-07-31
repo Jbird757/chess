@@ -96,10 +96,10 @@ public class MySQLGameDAO implements GameDAO {
             try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
                 for (var i = 0; i < args.length; i++) {
                     var param = args[i];
-                    if (param instanceof String p) ps.setString(i + 1, p);
-                    else if (param instanceof Integer p) ps.setInt(i + 1, p);
-                    else if (param instanceof ChessGame p) ps.setString(i+1, new Gson().toJson(p));
-                    else if (param == null) ps.setNull(i + 1, NULL);
+                    if (param instanceof String p) {ps.setString(i + 1, p);}
+                    else if (param instanceof Integer p) {ps.setInt(i + 1, p);}
+                    else if (param instanceof ChessGame p) {ps.setString(i+1, new Gson().toJson(p));}
+                    else if (param == null) {ps.setNull(i + 1, NULL);}
                 }
                 ps.executeUpdate();
 

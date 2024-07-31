@@ -48,28 +48,13 @@ public class MySQLUserDAO implements UserDAO {
     @Override
     public void createUser(UserData user) throws DataAccessException {
         var statement = "INSERT INTO userdata (username, password, email) VALUES (?, ?, ?)";
-        updateDatabase(statement, user.username(), user.password(), user.email());
+        DBUpdate.updateDatabase(statement, user.username(), user.password(), user.email());
     }
 
     @Override
     public void clearUserDB() throws DataAccessException {
         var statement = "TRUNCATE TABLE userdata";
-        updateDatabase(statement);
-    }
-
-    private void updateDatabase(String statement, Object... args) throws DataAccessException {
-        try (var conn = DatabaseManager.getConnection()) {
-            try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
-                for (var i = 0; i < args.length; i++) {
-                    var param = args[i];
-                    if (param instanceof String p) ps.setString(i + 1, p);
-                    else if (param == null) ps.setNull(i + 1, NULL);
-                }
-                ps.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
-        }
+        DBUpdate.updateDatabase(statement);
     }
 
     public void configureDatabase(String[] createStatements) throws DataAccessException {

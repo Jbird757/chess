@@ -1,13 +1,8 @@
-package dataAccess;
+package dataaccess;
 
-import dataaccess.MySQLAuthDAO;
-import dataaccess.MySQLUserDAO;
 import model.UserData;
-import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MySQLUserDAOTest {
 

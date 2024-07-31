@@ -25,7 +25,7 @@ public class MySQLAuthDAO implements AuthDAO {
     @Override
     public AuthData createAuth(AuthData auth) throws DataAccessException {
         var statement = "INSERT INTO authdata (authToken, username) VALUES (?, ?)";
-        updateDatabase(statement, auth.authToken(), auth.username());
+        DBUpdate.updateDatabase(statement, auth.authToken(), auth.username());
         return auth;
     }
 
@@ -50,28 +50,13 @@ public class MySQLAuthDAO implements AuthDAO {
     @Override
     public void deleteAuth(String authToken) throws DataAccessException {
         var statement = "DELETE FROM authdata WHERE authToken=?";
-        updateDatabase(statement, authToken);
+        DBUpdate.updateDatabase(statement, authToken);
     }
 
     @Override
     public void clearAuthDB() throws DataAccessException {
         var statement = "TRUNCATE TABLE authdata";
-        updateDatabase(statement);
-    }
-
-    private void updateDatabase(String statement, Object... args) throws DataAccessException {
-        try (var conn = DatabaseManager.getConnection()) {
-            try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
-                for (var i = 0; i < args.length; i++) {
-                    var param = args[i];
-                    if (param instanceof String p) ps.setString(i + 1, p);
-                    else if (param == null) ps.setNull(i + 1, NULL);
-                }
-                ps.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
-        }
+        DBUpdate.updateDatabase(statement);
     }
 
     public void configureDatabase(String[] createStatements) throws DataAccessException {
