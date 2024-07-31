@@ -29,8 +29,6 @@ class MySQLAuthDAOTest {
             AuthData authNotInDB = dao.getAuth(newAuth.authToken());
             Assertions.assertNull(authNotInDB);
         });
-
-
     }
 
 }

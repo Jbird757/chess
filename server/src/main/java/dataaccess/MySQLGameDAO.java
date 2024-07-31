@@ -25,12 +25,17 @@ public class MySQLGameDAO implements GameDAO {
                 ps.setInt(1, id);
                 try (var rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
-                                rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class));
+                        GameData returnedGame = new GameData(
+                                rs.getInt("gameId"),
+                                rs.getString("blackUsername"),
+                                rs.getString("whiteUsername"),
+                                rs.getString("gameName"),
+                                new Gson().fromJson(rs.getString("game"), ChessGame.class));
+                        return returnedGame;
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DataAccessException(String.format("Unable to read data: %s", e.getMessage()));
         }
         return null;
@@ -58,8 +63,8 @@ public class MySQLGameDAO implements GameDAO {
     @Override
     public GameData createGame(GameData game) throws DataAccessException {
         var statement = "INSERT INTO gamedata (whiteUsername, blackUsername, gameName, game) VALUES (?, ?, ?, ?)";
-        updateDatabase(statement, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
-        return game;
+        int newGameID = updateDatabase(statement, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
+        return getGame(newGameID);
     }
 
     @Override
@@ -75,15 +80,24 @@ public class MySQLGameDAO implements GameDAO {
         updateDatabase(statement);
     }
 
-    private void updateDatabase(String statement, Object... args) throws DataAccessException {
+    private int updateDatabase(String statement, Object... args) throws DataAccessException {
         try (var conn = DatabaseManager.getConnection()) {
             try (var ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
                 for (var i = 0; i < args.length; i++) {
                     var param = args[i];
                     if (param instanceof String p) ps.setString(i + 1, p);
+                    else if (param instanceof Integer p) ps.setInt(i + 1, p);
+                    else if (param instanceof ChessGame p) ps.setString(i+1, new Gson().toJson(p));
                     else if (param == null) ps.setNull(i + 1, NULL);
                 }
                 ps.executeUpdate();
+
+                var rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+
+                return 0;
             }
         } catch (SQLException e) {
             throw new DataAccessException(String.format("unable to update database: %s, %s", statement, e.getMessage()));
@@ -92,10 +106,10 @@ public class MySQLGameDAO implements GameDAO {
 
     private final String[] createStatements = {
             """
-            CREATE TABLE IF NOT EXISTS gameData (
+            CREATE TABLE IF NOT EXISTS gamedata (
               `gameId` int NOT NULL AUTO_INCREMENT,
-              `whiteUsername` varchar(256) NOT NULL,
-              `blackUsername` varchar(256) NOT NULL,
+              `whiteUsername` varchar(256),
+              `blackUsername` varchar(256),
               `gameName` varchar(256) NOT NULL,
               `game` TEXT DEFAULT NULL,
               PRIMARY KEY (`gameId`)
