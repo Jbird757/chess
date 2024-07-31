@@ -4,8 +4,8 @@ import dataaccess.DataAccessException;
 import dataaccess.exceptions.AlreadyTakenException;
 import dataaccess.exceptions.BadRequestException;
 import dataaccess.exceptions.UnauthorizedException;
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryUserDAO;
+import dataaccess.MySQLAuthDAO;
+import dataaccess.MySQLUserDAO;
 import model.AuthData;
 import model.UserData;
 
@@ -14,8 +14,8 @@ import java.util.UUID;
 public class UserService {
 
     public AuthData registerUser(UserData user) throws DataAccessException {
-        MemoryUserDAO userDAO = new MemoryUserDAO();
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        MySQLUserDAO userDAO = new MySQLUserDAO();
+        MySQLAuthDAO authDAO = new MySQLAuthDAO();
 
         if (user.username() == null || user.password() == null || user.email() == null) {
             throw new BadRequestException("Error: bad request");
@@ -41,8 +41,8 @@ public class UserService {
             throw new DataAccessException("Error: Fields are blank");
         }
 
-        MemoryUserDAO userDAO = new MemoryUserDAO();
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        MySQLUserDAO userDAO = new MySQLUserDAO();
+        MySQLAuthDAO authDAO = new MySQLAuthDAO();
         UserData loginUser = userDAO.getUser(user.username());
         if (loginUser == null) {
             throw new UnauthorizedException("Error: unauthorized");
@@ -62,7 +62,7 @@ public class UserService {
             throw new UnauthorizedException("Error: unauthorized");
         }
 
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        MySQLAuthDAO authDAO = new MySQLAuthDAO();
         AuthData authy = authDAO.getAuth(auth.authToken());
 
         if (authy == null) {

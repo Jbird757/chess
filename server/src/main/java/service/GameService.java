@@ -22,7 +22,7 @@ public class GameService {
         }
 
         //Check if auth is valid
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        MySQLAuthDAO authDAO = new MySQLAuthDAO();
         AuthData authy = authDAO.getAuth(authToken);
 
         if (authy == null) {
@@ -43,7 +43,7 @@ public class GameService {
         }
 
         //Check if auth is valid
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        MySQLAuthDAO authDAO = new MySQLAuthDAO();
         AuthData authy = authDAO.getAuth(authToken);
 
         if (authy == null) {
@@ -63,7 +63,7 @@ public class GameService {
             throw new BadRequestException("Error: bad request");
         }
 
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        MySQLAuthDAO authDAO = new MySQLAuthDAO();
         AuthData authy = authDAO.getAuth(authToken);
 
         //Check if auth is valid
