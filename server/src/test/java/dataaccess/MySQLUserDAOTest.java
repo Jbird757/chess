@@ -82,8 +82,8 @@ class MySQLUserDAOTest {
             ps.setString(2, username);
             ps.setString(3, "myemail");
             ps.executeUpdate();
-            UserData UserData = dao.getUser("11111");
-            Assertions.assertNull(UserData);
+            UserData userData = dao.getUser("11111");
+            Assertions.assertNull(userData);
         });
     }
 
@@ -92,7 +92,7 @@ class MySQLUserDAOTest {
         UserData newUser = new UserData("helloThere", "123456", "myemail1");
         UserData newUser2 = new UserData("helloThere2", "12345678", "myemail1");
         UserData newUser3 = new UserData("helloThere3", "123456234234", "myemail1");
-        var Users = new ArrayList<UserData>();
+        var users = new ArrayList<UserData>();
         var statement = "SELECT * FROM Userdata";
 
         Assertions.assertDoesNotThrow(() -> {
@@ -106,9 +106,9 @@ class MySQLUserDAOTest {
             var ps = conn.prepareStatement(statement);
             var rs = ps.executeQuery();
             while (rs.next()) {
-                Users.add (new UserData(rs.getString(1), rs.getString(2), rs.getString(3)));
+                users.add (new UserData(rs.getString(1), rs.getString(2), rs.getString(3)));
             }
-            Assertions.assertTrue(Users.isEmpty());
+            Assertions.assertTrue(users.isEmpty());
         });
     }
 
