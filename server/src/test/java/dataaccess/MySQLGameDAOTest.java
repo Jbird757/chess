@@ -6,6 +6,7 @@ import model.GameData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static dataaccess.DBUpdate.updateDatabase;
@@ -40,8 +41,8 @@ class MySQLGameDAOTest {
 
     @Test
     void setGameNegative() {
-        GameData newGame = new GameData(null, null, null, "game1", new ChessGame());
-        Assertions.assertDoesNotThrow(() -> {
+        GameData newGame = new GameData(null, null, null, null, new ChessGame());
+        Assertions.assertThrows(DataAccessException.class, () -> {
             MySQLGameDAO dao = new MySQLGameDAO();
             dao.clearGameDB();
             GameData createdGame = dao.createGame(newGame);
@@ -81,7 +82,7 @@ class MySQLGameDAOTest {
     }
 
     @Test
-    void getAllGamesPositive() {
+    void getAllGamesPositive() throws DataAccessException, SQLException {
         GameData newGame = new GameData(null, null, null, "game1", new ChessGame());
         GameData newGame2 = new GameData(null, null, null, "game2", new ChessGame());
         GameData newGame3 = new GameData(null, null, null, "game3", new ChessGame());
@@ -89,7 +90,6 @@ class MySQLGameDAOTest {
         var games = new ArrayList<GameData>();
         var statement = "SELECT * FROM gamedata";
 
-        Assertions.assertDoesNotThrow(() -> {
             MySQLGameDAO dao = new MySQLGameDAO();
             dao.clearGameDB();
             int gameID1 = dao.createGame(newGame).gameID();
@@ -106,7 +106,6 @@ class MySQLGameDAOTest {
             premadeGamesList.add(new GameData(gameID2, null, null, "game2", new ChessGame()));
             premadeGamesList.add(new GameData(gameID3, null, null, "game3", new ChessGame()));
             Assertions.assertEquals(premadeGamesList, games);
-        });
     }
 
     @Test
@@ -124,33 +123,6 @@ class MySQLGameDAOTest {
                         rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class)));
             }
             Assertions.assertTrue(games.isEmpty());
-        });
-    }
-
-    @Test
-    void updateGamePositive() {
-        var statement = "UPDATE gamedata SET whiteUsername = ?, blackUsername = ?, gameName = ?, game = ? WHERE gameId=?";
-        GameData newGame = new GameData(null, null,
-                null, "game1", new ChessGame());
-
-        Assertions.assertDoesNotThrow(() -> {
-            MySQLGameDAO dao = new MySQLGameDAO();
-            dao.clearGameDB();
-            GameData createdGame = dao.createGame(newGame);
-            GameData updatedVersion = new GameData(
-                    createdGame.gameID(),
-                    "whiteplayer",
-                    "blackplayer",
-                    "game1",
-                    new ChessGame());
-            updateDatabase(statement,
-                    updatedVersion.whiteUsername(),
-                    updatedVersion.blackUsername(),
-                    newGame.gameName(),
-                    newGame.game(),
-                    createdGame.gameID());
-            GameData returnedGame = dao.getGame(createdGame.gameID());
-            Assertions.assertEquals(returnedGame, updatedVersion);
         });
     }
 

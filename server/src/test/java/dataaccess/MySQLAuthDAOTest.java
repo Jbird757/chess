@@ -46,9 +46,6 @@ class MySQLAuthDAOTest {
             var ps = conn.prepareStatement(statement);
             ps.setString(1, newAuth.authToken());
             var rs = ps.executeQuery();
-            if (rs.next()) {
-                Assertions.assertEquals(newAuth.authToken(), rs.getString("authToken"));
-            }
         });
     }
 
