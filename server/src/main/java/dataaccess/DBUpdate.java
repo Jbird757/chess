@@ -7,7 +7,7 @@ import static java.sql.Types.NULL;
 
 public class DBUpdate {
 
-    static void test(String[] createStatements) throws DataAccessException {
+    static void configureDatabase(String[] createStatements) throws DataAccessException {
         DatabaseManager.createDatabase();
         try (var conn = DatabaseManager.getConnection()) {
             for (var statement : createStatements) {

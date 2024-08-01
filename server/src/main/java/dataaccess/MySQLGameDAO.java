@@ -116,6 +116,6 @@ public class MySQLGameDAO implements GameDAO {
     }
 
     public void configureDatabase(String[] createStatements) throws DataAccessException {
-        DBUpdate.test(createStatements);
+        DBUpdate.configureDatabase(createStatements);
     }
 }

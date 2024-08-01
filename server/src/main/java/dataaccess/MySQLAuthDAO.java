@@ -2,11 +2,6 @@ package dataaccess;
 
 import model.AuthData;
 
-import java.sql.SQLException;
-
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
-
 public class MySQLAuthDAO implements AuthDAO {
 
     public MySQLAuthDAO() throws DataAccessException {
@@ -60,6 +55,6 @@ public class MySQLAuthDAO implements AuthDAO {
     }
 
     public void configureDatabase(String[] createStatements) throws DataAccessException {
-        DBUpdate.test(createStatements);
+        DBUpdate.configureDatabase(createStatements);
     }
 }

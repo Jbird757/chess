@@ -4,9 +4,6 @@ import model.UserData;
 
 import java.sql.SQLException;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
-
 public class MySQLUserDAO implements UserDAO {
 
     public MySQLUserDAO() throws DataAccessException {
@@ -58,6 +55,6 @@ public class MySQLUserDAO implements UserDAO {
     }
 
     public void configureDatabase(String[] createStatements) throws DataAccessException {
-        DBUpdate.test(createStatements);
+        DBUpdate.configureDatabase(createStatements);
     }
 }
