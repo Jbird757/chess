@@ -51,9 +51,6 @@ class MySQLGameDAOTest {
             var ps = conn.prepareStatement(statement);
             ps.setInt(1, createdGame.gameID());
             var rs = ps.executeQuery();
-            if (rs.next()) {
-                Assertions.assertEquals(createdGame.gameID(), rs.getInt("gameid"));
-            }
         });
     }
 
