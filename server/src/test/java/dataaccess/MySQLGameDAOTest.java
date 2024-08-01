@@ -96,8 +96,10 @@ class MySQLGameDAOTest {
             var ps = conn.prepareStatement(statement);
             var rs = ps.executeQuery();
             while (rs.next()) {
-                games.add (new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class)));
+                games.add(new GameData(rs.getInt("gameid"), rs.getString("whiteusername"),
+                        rs.getString("blackusername"),
+                        rs.getString("gamename"),
+                        new Gson().fromJson(rs.getString(5), ChessGame.class)));
             }
             premadeGamesList.add(new GameData(gameID1, null, null, "game1", new ChessGame()));
             premadeGamesList.add(new GameData(gameID2, null, null, "game2", new ChessGame()));
@@ -116,7 +118,7 @@ class MySQLGameDAOTest {
             var ps = conn.prepareStatement(statement);
             var rs = ps.executeQuery();
             while (rs.next()) {
-                games.add (new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
+                games.add(new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class)));
             }
             Assertions.assertTrue(games.isEmpty());
@@ -158,7 +160,7 @@ class MySQLGameDAOTest {
             var ps = conn.prepareStatement(statement);
             var rs = ps.executeQuery();
             while (rs.next()) {
-                games.add (new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
+                games.add(new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class)));
             }
             Assertions.assertTrue(games.isEmpty());
