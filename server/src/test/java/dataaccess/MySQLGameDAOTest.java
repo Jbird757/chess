@@ -118,6 +118,8 @@ class MySQLGameDAOTest {
             var ps = conn.prepareStatement(statement);
             var rs = ps.executeQuery();
             while (rs.next()) {
+                int i = 0;
+                i++;
                 games.add(new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
                         rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class)));
             }
@@ -160,8 +162,9 @@ class MySQLGameDAOTest {
             var ps = conn.prepareStatement(statement);
             var rs = ps.executeQuery();
             while (rs.next()) {
-                games.add(new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class)));
+                GameData theresANewGame = new GameData(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getString(4), new Gson().fromJson(rs.getString(5), ChessGame.class));
+                games.add(theresANewGame);
             }
             Assertions.assertTrue(games.isEmpty());
         });
