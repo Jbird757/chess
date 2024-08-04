@@ -46,6 +46,9 @@ public class ChessClient {
                     break;
                 case "help":
                     printPreLoginHelp();
+                case "print":
+                    printBoard(words[1]);
+                    break;
                 default:
                     System.out.println("Invalid command");
                     break;
@@ -99,6 +102,11 @@ public class ChessClient {
             }
         }
         scanner.close();
+    }
+
+    private void printBoard(String playerColor) {
+        DisplayChessBoard board = new DisplayChessBoard(playerColor);
+        board.printBoard();
     }
 
     private void registerUser(String username, String password, String email) {
