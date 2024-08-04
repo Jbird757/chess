@@ -88,7 +88,6 @@ public class ChessClient {
                     observeGame(Integer.parseInt(words[1]));
                     break;
                 case "logout":
-                    this.username = "LOGGED_OUT";
                     logout();
                     quit = true;
                     break;
@@ -105,6 +104,7 @@ public class ChessClient {
     private void registerUser(String username, String password, String email) {
         try {
             server.registerUser(username, password, email);
+            this.username = username;
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);
@@ -114,6 +114,7 @@ public class ChessClient {
     private void login(String username, String password) {
         try {
             server.login(username, password);
+            this.username = username;
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);
@@ -159,6 +160,7 @@ public class ChessClient {
     private void logout() {
         try {
             server.logout();
+            this.username = "LOGGED_OUT";
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);

@@ -20,15 +20,17 @@ public class ServerFacade {
         return this.makeRequest("POST", path, user, AuthData.class);
     }
 
-    public AuthData login(String username, String Password) throws DataAccessException {
+    public AuthData login(String username, String password) throws DataAccessException {
+        UserData user = new UserData(username, password, null);
         var path = "/session";
         System.out.println("You are logged in");
-        return null;
+        return this.makeRequest("POST", path, user, AuthData.class);
     }
 
     public void logout() throws DataAccessException {
         var path = "/session";
         System.out.println("You are logged out");
+        this.makeRequest("DELETE", path, null, null);
     }
 
     public GameData[] listGames() throws DataAccessException {
