@@ -1,5 +1,6 @@
 package client;
 
+import model.AuthData;
 import org.junit.jupiter.api.*;
 import server.Server;
 
@@ -22,8 +23,20 @@ public class ServerFacadeTests {
 
 
     @Test
-    public void sampleTest() {
-        Assertions.assertTrue(true);
+    public void registerTest() {
+        ServerFacade serverFacade = new ServerFacade("http://localhost:8080");
+        Assertions.assertDoesNotThrow(() -> {
+            AuthData newAuth = serverFacade.registerUser("user1", "password", "myeamil");
+            System.out.println(newAuth);
+        });
+    }
+
+    @Test
+    public void loginTest() {
+        ServerFacade serverFacade = new ServerFacade("http://localhost:8080");
+        Assertions.assertDoesNotThrow(() -> {
+            
+        });
     }
 
 }

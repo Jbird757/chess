@@ -1,3 +1,5 @@
+package client;
+
 import java.util.Scanner;
 
 public class ChessClient {
@@ -46,6 +48,7 @@ public class ChessClient {
                     break;
                 case "help":
                     printPreLoginHelp();
+                    break;
                 case "print":
                     printBoard(words[1]);
                     break;
@@ -72,30 +75,51 @@ public class ChessClient {
                 case "create":
                     if (words.length != 2) {
                         System.out.println("Error: invalid arguments");
+                        break;
                     }
                     createGame(words[1]);
                     break;
+
                 case "list":
                     listGames();
                     break;
+
                 case "join":
-                    if (words.length != 3) {
+                    if (words.length != 3 || (!words[2].equalsIgnoreCase("BLACK") && !words[2].equalsIgnoreCase("WHITE"))) {
                         System.out.println("Error: invalid arguments");
+                        break;
                     }
-                    joinGame(Integer.parseInt(words[1]), words[2]);
+
+                    try {
+                        int gameID = Integer.parseInt(words[1]);
+                        joinGame(gameID, words[2]);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error: game ID must be an integer");
+                    }
                     break;
+
                 case "observe":
                     if (words.length != 2) {
                         System.out.println("Error: invalid arguments");
+                        break;
                     }
-                    observeGame(Integer.parseInt(words[1]));
+                    try {
+                        int gameID = Integer.parseInt(words[1]);
+                        observeGame(gameID);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error: game ID must be an integer");
+                    }
                     break;
+
                 case "logout":
                     logout();
                     quit = true;
                     break;
+
                 case "help":
                     printPostLoginHelp();
+                    break;
+
                 default:
                     System.out.println("Invalid command");
                     break;

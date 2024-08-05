@@ -1,3 +1,5 @@
+package client;
+
 import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
@@ -44,7 +46,7 @@ public class DisplayChessBoard {
         }
     }
 
-    public void makeBoard() {
+    private void makeBoard() {
         boardLayout[0][0] = rim + "   ";
         boardLayout[0][9] = rim + "   ";
         boardLayout[9][0] = rim + "   ";
@@ -59,9 +61,9 @@ public class DisplayChessBoard {
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     if ((i == 0 || i ==9) && j != 0 && j !=9) {
-                        boardLayout[i][j] = rim + " " + intToChar.get(j) + " ";
+                        boardLayout[i][j] = rim + " " + intToChar.get(j) + " "; //Print letter coordinates
                     } else if ((j == 9 || j == 0) && (i != 0 && i != 9)) {
-                        boardLayout[i][j] = rim + " " + (9 - i) + " ";
+                        boardLayout[i][j] = rim + " " + (9 - i) + " "; //Print number coordinates
                     } else if (j != 0 && j != 9) {
                         boardLayout[i][j] = getChessPiece(i, j);
                     }
@@ -75,14 +77,14 @@ public class DisplayChessBoard {
                     } else if ((j == 9 || j == 0) && (i != 0 && i != 9)) {
                         boardLayout[i][j] = rim + " " + i + " ";
                     }  else if (j != 0 && j != 9) {
-                        boardLayout[9-i][9-j] = getChessPiece(i, j);
+                        boardLayout[9-i][9-j] = getChessPiece(i, j); //Game Squares
                     }
                 }
             }
         }
     }
 
-    String getChessPiece(int i, int j) {
+    private String getChessPiece(int i, int j) {
         String pieceToPut = emptySquare;
         ChessPiece piece = board.getPiece(new ChessPosition(i, j));
         if (piece != null) {

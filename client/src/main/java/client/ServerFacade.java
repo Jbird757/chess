@@ -1,3 +1,5 @@
+package client;
+
 import dataaccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
@@ -42,17 +44,18 @@ public class ServerFacade {
     public GameData createGame(String gameName) throws DataAccessException {
         var path = "/game";
         System.out.println("Creating game " + gameName);
-        return null;
+        return this.makeRequest("POST", path, null, GameData.class);
     }
 
     public void joinGame(int gameID, String playerColor) throws DataAccessException {
         System.out.println("Joining game " + gameID);
         var path = "/game";
+        this.makeRequest("POST", path, null, null);
     }
 
     public GameData observeGame(int gameID) throws DataAccessException {
         var path = "/game";
-        return null;
+        return this.makeRequest("GET", path, null, GameData.class);
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws DataAccessException {
