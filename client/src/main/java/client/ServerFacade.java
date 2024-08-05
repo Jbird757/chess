@@ -1,5 +1,6 @@
 package client;
 
+import chess.ChessGame;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
@@ -36,9 +37,10 @@ public class ServerFacade {
     }
 
     public GameData createGame(String gameName, String authToken) throws DataAccessException {
+        GameData newGame = new GameData(null, null, null, gameName, null);
         var path = "/game";
         System.out.println("Creating game " + gameName);
-        return this.makeRequest("POST", path, null, GameData.class, authToken);
+        return this.makeRequest("POST", path, newGame, GameData.class, authToken);
     }
 
     public GameData[] listGames(String authToken) throws DataAccessException {
@@ -54,8 +56,9 @@ public class ServerFacade {
     }
 
     public GameData observeGame(int gameID, String authToken) throws DataAccessException {
-        var path = "/game";
-        return this.makeRequest("GET", path, null, GameData.class, authToken);
+        DisplayChessBoard board = new DisplayChessBoard("WHITE");
+        board.printBoard();
+        return new GameData(1, "whiteplayer", "blackplayer", "game1", new ChessGame());
     }
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String authHeader) throws DataAccessException {
