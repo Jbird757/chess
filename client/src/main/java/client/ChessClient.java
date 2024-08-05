@@ -31,8 +31,8 @@ public class ChessClient {
 
             switch (words[0].toLowerCase()) {
                 case "register":
-                    if (words.length != 4) {
-                        System.out.println("Error: invalid arguments");
+                    if (words.length < 4) {
+                        System.out.println("Error: not enough arguments provided");
                         break;
                     }
                     System.out.println("Registering user...");
@@ -40,13 +40,12 @@ public class ChessClient {
                     postLoginConsole();
                     break;
                 case "login":
-                    if (words.length != 3) {
-                        System.out.println("Error: invalid arguments");
+                    if (words.length < 3) {
+                        System.out.println("Error: not enough arguments provided");
                         break;
                     }
                     System.out.println("Logging in...");
                     login(words[1], words[2]);
-                    postLoginConsole();
                     break;
                 case "quit":
                     quit = true;
@@ -78,8 +77,8 @@ public class ChessClient {
 
             switch (words[0].toLowerCase()) {
                 case "create":
-                    if (words.length != 2) {
-                        System.out.println("Error: invalid arguments");
+                    if (words.length < 2) {
+                        System.out.println("Error: not enough arguments provided");
                         break;
                     }
                     createGame(words[1]);
@@ -90,8 +89,8 @@ public class ChessClient {
                     break;
 
                 case "join":
-                    if (words.length != 3 || (!words[2].equalsIgnoreCase("BLACK") && !words[2].equalsIgnoreCase("WHITE"))) {
-                        System.out.println("Error: invalid arguments");
+                    if (words.length < 3 || (!words[2].equalsIgnoreCase("BLACK") && !words[2].equalsIgnoreCase("WHITE"))) {
+                        System.out.println("Error: not enough arguments provided");
                         break;
                     }
 
@@ -104,8 +103,8 @@ public class ChessClient {
                     break;
 
                 case "observe":
-                    if (words.length != 2) {
-                        System.out.println("Error: invalid arguments");
+                    if (words.length < 2) {
+                        System.out.println("Error: not enough arguments provided");
                         break;
                     }
                     try {
@@ -153,9 +152,13 @@ public class ChessClient {
         try {
             this.authToken = server.login(username, password).authToken();
             this.username = username;
+            postLoginConsole();
         } catch (Exception e) {
-            var msg = e.getMessage();
-            System.out.println(msg);
+            if (e.getMessage().equals("403")) {
+                System.out.println("Username already taken");
+            } else if (e.getMessage().equals("401")) {
+                System.out.println("Invalid username or password");
+            }
         }
     }
 

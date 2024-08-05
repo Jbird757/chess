@@ -61,7 +61,7 @@ public class ServerFacadeTests {
     @Test
     public void loginTestNegative() {
         Assertions.assertThrows(DataAccessException.class, () -> {
-
+            serverFacade.login("user1", "password");
         });
     }
 
@@ -77,7 +77,7 @@ public class ServerFacadeTests {
     @Test
     public void logoutTestNegative() {
         Assertions.assertThrows(DataAccessException.class, () -> {
-
+            //Don't know how this could fail
         });
     }
 
@@ -93,7 +93,7 @@ public class ServerFacadeTests {
     @Test
     public void creatGameTestNegative() {
         Assertions.assertThrows(DataAccessException.class, () -> {
-
+            //Don't know how this could fail
         });
     }
 
@@ -112,7 +112,9 @@ public class ServerFacadeTests {
 
     @Test
     public void listGamesTestNegative() {
-        Assertions.assertThrows(DataAccessException.class, () -> {});
+        Assertions.assertThrows(DataAccessException.class, () -> {
+            //Don't know how this could fail
+        });
     }
 
     @Test
@@ -130,7 +132,10 @@ public class ServerFacadeTests {
     @Test
     public void joinGameTestNegative() {
         Assertions.assertThrows(DataAccessException.class, () -> {
-
+            AuthData auth = serverFacade.registerUser("user1", "password", "myemail");
+            GameData newGame = serverFacade.createGame("game1", auth.authToken());
+            serverFacade.joinGame(1, "WHITE", auth.authToken());
+            serverFacade.joinGame(1, "WHITE", auth.authToken());
         });
     }
 }
