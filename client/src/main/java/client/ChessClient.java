@@ -35,15 +35,16 @@ public class ChessClient {
                         System.out.println("Error: invalid arguments");
                         break;
                     }
-                    System.out.print("Registering user...");
+                    System.out.println("Registering user...");
                     registerUser(words[1], words[2], words[3]);
+                    postLoginConsole();
                     break;
                 case "login":
                     if (words.length != 3) {
                         System.out.println("Error: invalid arguments");
                         break;
                     }
-                    System.out.print("Logging in...");
+                    System.out.println("Logging in...");
                     login(words[1], words[2]);
                     postLoginConsole();
                     break;
@@ -65,7 +66,7 @@ public class ChessClient {
     }
 
     private void postLoginConsole() {
-        System.out.print("Welcome "+ username +"!");
+        System.out.println("Welcome "+ username +"!");
         printPostLoginHelp();
         Scanner scanner = new Scanner(System.in);
         boolean quit = false;
@@ -142,8 +143,9 @@ public class ChessClient {
             this.authToken = server.registerUser(username, password, email).authToken();
             this.username = username;
         } catch (Exception e) {
-            var msg = e.getMessage();
-            System.out.println(msg);
+            if (e.getMessage().equals("403")) {
+                System.out.println("Username already taken");
+            }
         }
     }
 
@@ -220,6 +222,7 @@ public class ChessClient {
         System.out.println("login <USERNAME> <PASSWORD> \t\t\t\tLogs in an existing user");
         System.out.println("quit \t\t\t\t\t\t\t\t\t\tExit Application");
         System.out.println("help \t\t\t\t\t\t\t\t\t\tView these commands at any time");
+        System.out.print("\n\n");
     }
 
     private void printPostLoginHelp() {
@@ -230,5 +233,6 @@ public class ChessClient {
         System.out.println("observe <ID> \t\t\tWatch a game with the specified ID");
         System.out.println("logout \t\t\t\t\tLogs out the current user");
         System.out.println("help \t\t\t\t\tView these commands at any time");
+        System.out.print("\n\n");
     }
 }

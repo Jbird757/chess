@@ -52,7 +52,7 @@ public class ServerFacade {
         GameData[] games = listGames(authToken);
         JoinGameModel joinInfo = new JoinGameModel(playerColor, games[gameID-1].gameID());
         var path = "/game";
-        this.makeRequest("POST", path, joinInfo, null, authToken);
+        this.makeRequest("PUT", path, joinInfo, null, authToken);
     }
 
     public GameData observeGame(int gameID, String authToken) throws DataAccessException {
@@ -96,7 +96,8 @@ public class ServerFacade {
         var status = http.getResponseCode();
         var msg = http.getResponseMessage();
         if (!isSuccessful(status)) {
-            throw new DataAccessException("failure: " + status+"\t"+msg);
+            //throw new DataAccessException("failure: " + status+"\t"+msg);
+            throw new DataAccessException(String.valueOf(status));
         }
     }
 

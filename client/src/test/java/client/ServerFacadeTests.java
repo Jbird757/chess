@@ -1,6 +1,7 @@
 package client;
 
 import chess.ChessGame;
+import dataaccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
 import org.junit.jupiter.api.*;
@@ -37,7 +38,14 @@ public class ServerFacadeTests {
     public void registerTestPositive() {
         Assertions.assertDoesNotThrow(() -> {
             AuthData newAuth = serverFacade.registerUser("user1", "password", "myemail");
-            System.out.println(newAuth);
+        });
+    }
+
+    @Test
+    public void registerTestNegative() {
+        Assertions.assertThrows(DataAccessException.class, () -> {
+            serverFacade.registerUser("user1", "password", "myemail");
+            AuthData newAuth = serverFacade.registerUser("user1", "password2", "myemail2");
         });
     }
 
@@ -51,6 +59,13 @@ public class ServerFacadeTests {
     }
 
     @Test
+    public void loginTestNegative() {
+        Assertions.assertThrows(DataAccessException.class, () -> {
+
+        });
+    }
+
+    @Test
     public void logoutTestPositive() {
         Assertions.assertDoesNotThrow(() -> {
             AuthData auth = serverFacade.registerUser("user1", "password", "myemail");
@@ -60,11 +75,25 @@ public class ServerFacadeTests {
     }
 
     @Test
+    public void logoutTestNegative() {
+        Assertions.assertThrows(DataAccessException.class, () -> {
+
+        });
+    }
+
+    @Test
     public void creatGameTestPositive() {
         Assertions.assertDoesNotThrow(() -> {
             AuthData auth = serverFacade.registerUser("user1", "password", "myemail");
             GameData newGame = serverFacade.createGame("game1", auth.authToken());
             System.out.println(newGame);
+        });
+    }
+
+    @Test
+    public void creatGameTestNegative() {
+        Assertions.assertThrows(DataAccessException.class, () -> {
+
         });
     }
 
@@ -82,6 +111,11 @@ public class ServerFacadeTests {
     }
 
     @Test
+    public void listGamesTestNegative() {
+        Assertions.assertThrows(DataAccessException.class, () -> {});
+    }
+
+    @Test
     public void joinGameTestPositive() {
         Assertions.assertDoesNotThrow(() -> {
             AuthData auth = serverFacade.registerUser("user1", "password", "myemail");
@@ -89,7 +123,14 @@ public class ServerFacadeTests {
             serverFacade.joinGame(1, "WHITE", auth.authToken());
             serverFacade.joinGame(1, "BLACK", auth.authToken());
             GameData[] games = serverFacade.listGames(auth.authToken());
-            Assertions.assertEquals(games[0], new GameData(1, "user1", "user1", "game1", new ChessGame()));
+            Assertions.assertEquals(new GameData(1, "user1", "user1", "game1", null), games[0]);
+        });
+    }
+
+    @Test
+    public void joinGameTestNegative() {
+        Assertions.assertThrows(DataAccessException.class, () -> {
+
         });
     }
 }
