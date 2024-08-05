@@ -1,9 +1,12 @@
 package client;
 
+import model.AuthData;
+
 import java.util.Scanner;
 
 public class ChessClient {
     private String username = "LOGGED_OUT";
+    private String authToken = null;
     private ServerFacade server;
 
     public ChessClient(String serverURL){
@@ -135,7 +138,7 @@ public class ChessClient {
 
     private void registerUser(String username, String password, String email) {
         try {
-            server.registerUser(username, password, email);
+            this.authToken = server.registerUser(username, password, email).authToken();
             this.username = username;
         } catch (Exception e) {
             var msg = e.getMessage();
@@ -145,7 +148,7 @@ public class ChessClient {
 
     private void login(String username, String password) {
         try {
-            server.login(username, password);
+            this.authToken = server.login(username, password).authToken();
             this.username = username;
         } catch (Exception e) {
             var msg = e.getMessage();
@@ -155,7 +158,7 @@ public class ChessClient {
 
     private void createGame(String gameName) {
         try {
-            server.createGame(gameName);
+            server.createGame(gameName, this.authToken);
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);
@@ -164,7 +167,7 @@ public class ChessClient {
 
     private void listGames() {
         try {
-            server.listGames();
+            server.listGames(this.authToken);
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);
@@ -173,7 +176,7 @@ public class ChessClient {
 
     private void joinGame(int gameID, String playerColor) {
         try {
-            server.joinGame(gameID, playerColor);
+            server.joinGame(gameID, playerColor, this.authToken);
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);
@@ -182,7 +185,7 @@ public class ChessClient {
 
     private void observeGame(int gameID) {
         try {
-            server.observeGame(gameID);
+            server.observeGame(gameID, this.authToken);
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);
@@ -191,7 +194,7 @@ public class ChessClient {
 
     private void logout() {
         try {
-            server.logout();
+            server.logout(this.authToken);
             this.username = "LOGGED_OUT";
         } catch (Exception e) {
             var msg = e.getMessage();

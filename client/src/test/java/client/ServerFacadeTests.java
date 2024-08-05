@@ -23,7 +23,7 @@ public class ServerFacadeTests {
 
 
     @Test
-    public void registerTest() {
+    public void registerTestPositive() {
         ServerFacade serverFacade = new ServerFacade("http://localhost:8080");
         Assertions.assertDoesNotThrow(() -> {
             AuthData newAuth = serverFacade.registerUser("user1", "password", "myeamil");
@@ -32,10 +32,23 @@ public class ServerFacadeTests {
     }
 
     @Test
-    public void loginTest() {
+    public void loginTestPositive() {
         ServerFacade serverFacade = new ServerFacade("http://localhost:8080");
         Assertions.assertDoesNotThrow(() -> {
-            
+            serverFacade.registerUser("user1", "password", "myeamil");
+            AuthData loginAuth = serverFacade.login("user1", "password");
+            System.out.println(loginAuth);
+        });
+    }
+
+    @Test
+    public void logoutTestPositive() {
+        ServerFacade serverFacade = new ServerFacade("http://localhost:8080");
+        Assertions.assertDoesNotThrow(() -> {
+            AuthData auth = serverFacade.registerUser("user1", "password", "myeamil");
+            System.out.println(auth);
+            String authToken = auth.authToken();
+            serverFacade.logout(authToken);
         });
     }
 

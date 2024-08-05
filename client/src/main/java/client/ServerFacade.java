@@ -19,51 +19,55 @@ public class ServerFacade {
     public AuthData registerUser(String username, String Password, String email) throws DataAccessException {
         UserData user = new UserData(username, Password, email);
         var path = "/user";
-        return this.makeRequest("POST", path, user, AuthData.class);
+        return this.makeRequest("POST", path, user, AuthData.class, null);
     }
 
     public AuthData login(String username, String password) throws DataAccessException {
         UserData user = new UserData(username, password, null);
         var path = "/session";
         System.out.println("You are logged in");
-        return this.makeRequest("POST", path, user, AuthData.class);
+        return this.makeRequest("POST", path, user, AuthData.class, null);
     }
 
-    public void logout() throws DataAccessException {
+    public void logout(String authToken) throws DataAccessException {
         var path = "/session";
         System.out.println("You are logged out");
-        this.makeRequest("DELETE", path, null, null);
+        this.makeRequest("DELETE", path, null, null, authToken);
     }
 
-    public GameData[] listGames() throws DataAccessException {
+    public GameData createGame(String gameName, String authToken) throws DataAccessException {
+        var path = "/game";
+        System.out.println("Creating game " + gameName);
+        return this.makeRequest("POST", path, null, GameData.class, authToken);
+    }
+
+    public GameData[] listGames(String authToken) throws DataAccessException {
         var path = "/game";
         System.out.println("List of games");
         return null;
     }
 
-    public GameData createGame(String gameName) throws DataAccessException {
-        var path = "/game";
-        System.out.println("Creating game " + gameName);
-        return this.makeRequest("POST", path, null, GameData.class);
-    }
-
-    public void joinGame(int gameID, String playerColor) throws DataAccessException {
+    public void joinGame(int gameID, String playerColor, String authToken) throws DataAccessException {
         System.out.println("Joining game " + gameID);
         var path = "/game";
-        this.makeRequest("POST", path, null, null);
+        this.makeRequest("POST", path, null, null, authToken);
     }
 
-    public GameData observeGame(int gameID) throws DataAccessException {
+    public GameData observeGame(int gameID, String authToken) throws DataAccessException {
         var path = "/game";
-        return this.makeRequest("GET", path, null, GameData.class);
+        return this.makeRequest("GET", path, null, GameData.class, authToken);
     }
 
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws DataAccessException {
+    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, String authHeader) throws DataAccessException {
         try {
             URL url = (new URI(serverURL + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
+
+            if (authHeader != null) {
+                http.setRequestProperty("Authorization", authHeader);
+            }
 
             writeBody(request, http);
             http.connect();

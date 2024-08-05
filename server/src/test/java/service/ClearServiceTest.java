@@ -3,6 +3,7 @@ package service;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class ClearServiceTest {
@@ -15,6 +16,7 @@ class ClearServiceTest {
         UserService newUserService = new UserService();
         GameService newGameService = new GameService();
         ClearService clearService = new ClearService();
+        Assertions.assertDoesNotThrow(clearService::clear);
 
 
         try {
@@ -35,6 +37,6 @@ class ClearServiceTest {
             e.printStackTrace();
         }
 
-
+        Assertions.assertDoesNotThrow(clearService::clear);
     }
 }
