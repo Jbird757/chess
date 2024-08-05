@@ -1,6 +1,7 @@
 package client;
 
 import model.AuthData;
+import model.GameData;
 
 import java.util.Scanner;
 
@@ -167,7 +168,18 @@ public class ChessClient {
 
     private void listGames() {
         try {
-            server.listGames(this.authToken);
+            GameData[] games = server.listGames(this.authToken);
+
+            if (games.length == 0) {
+                System.out.println("No games");
+                return;
+            }
+
+            for (int i = 0; i < games.length; i++) {
+                System.out.println("\nGame List:");
+                System.out.println("Game ID\t\tGame Name\t\tWhite Player Name\tBlack Player Name");
+                System.out.println(i+"\t\t"+games[i].gameName()+"\t\t"+games[i].whiteUsername()+"\t\t"+games[i].blackUsername());
+            }
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);

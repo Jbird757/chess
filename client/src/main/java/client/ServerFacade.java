@@ -2,6 +2,7 @@ package client;
 
 import chess.ChessGame;
 import dataaccess.DataAccessException;
+import handler.JoinGameModel;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
@@ -26,33 +27,32 @@ public class ServerFacade {
     public AuthData login(String username, String password) throws DataAccessException {
         UserData user = new UserData(username, password, null);
         var path = "/session";
-        System.out.println("You are logged in");
         return this.makeRequest("POST", path, user, AuthData.class, null);
     }
 
     public void logout(String authToken) throws DataAccessException {
         var path = "/session";
-        System.out.println("You are logged out");
         this.makeRequest("DELETE", path, null, null, authToken);
     }
 
     public GameData createGame(String gameName, String authToken) throws DataAccessException {
         GameData newGame = new GameData(null, null, null, gameName, null);
         var path = "/game";
-        System.out.println("Creating game " + gameName);
         return this.makeRequest("POST", path, newGame, GameData.class, authToken);
     }
 
     public GameData[] listGames(String authToken) throws DataAccessException {
         var path = "/game";
-        System.out.println("List of games");
-        return null;
+        record listGames(GameData[] games) {}
+        var response = this.makeRequest("GET", path, null, listGames.class, authToken);
+        return response.games();
     }
 
     public void joinGame(int gameID, String playerColor, String authToken) throws DataAccessException {
-        System.out.println("Joining game " + gameID);
+        GameData[] games = listGames(authToken);
+        JoinGameModel joinInfo = new JoinGameModel(playerColor, games[gameID-1].gameID());
         var path = "/game";
-        this.makeRequest("POST", path, null, null, authToken);
+        this.makeRequest("POST", path, joinInfo, null, authToken);
     }
 
     public GameData observeGame(int gameID, String authToken) throws DataAccessException {
@@ -94,8 +94,9 @@ public class ServerFacade {
 
     private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, DataAccessException {
         var status = http.getResponseCode();
+        var msg = http.getResponseMessage();
         if (!isSuccessful(status)) {
-            throw new DataAccessException("failure: " + status);
+            throw new DataAccessException("failure: " + status+"\t"+msg);
         }
     }
 

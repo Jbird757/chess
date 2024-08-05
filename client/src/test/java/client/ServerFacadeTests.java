@@ -1,5 +1,6 @@
 package client;
 
+import chess.ChessGame;
 import model.AuthData;
 import model.GameData;
 import org.junit.jupiter.api.*;
@@ -70,14 +71,25 @@ public class ServerFacadeTests {
     @Test
     public void listGamesTestPositive() {
         Assertions.assertDoesNotThrow(() -> {
-
+            AuthData auth = serverFacade.registerUser("user1", "password", "myemail");
+            GameData newGame = serverFacade.createGame("game1", auth.authToken());
+            GameData newGame2 = serverFacade.createGame("game2", auth.authToken());
+            GameData newGame3 = serverFacade.createGame("game3", auth.authToken());
+            GameData[] games = {newGame, newGame2, newGame3};
+            GameData[] returnedGames = serverFacade.listGames(auth.authToken());
+            Assertions.assertArrayEquals(games, returnedGames);
         });
     }
 
     @Test
     public void joinGameTestPositive() {
         Assertions.assertDoesNotThrow(() -> {
-
+            AuthData auth = serverFacade.registerUser("user1", "password", "myemail");
+            GameData newGame = serverFacade.createGame("game1", auth.authToken());
+            serverFacade.joinGame(1, "WHITE", auth.authToken());
+            serverFacade.joinGame(1, "BLACK", auth.authToken());
+            GameData[] games = serverFacade.listGames(auth.authToken());
+            Assertions.assertEquals(games[0], new GameData(1, "user1", "user1", "game1", new ChessGame()));
         });
     }
 }
