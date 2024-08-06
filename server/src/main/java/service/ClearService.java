@@ -1,7 +1,7 @@
 package service;
 
+import Exceptions.DataAccessException;
 import dataaccess.*;
-import handler.ErrorMessage;
 
 public class ClearService {
 

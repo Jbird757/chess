@@ -1,10 +1,11 @@
 package service;
 
+import Exceptions.DataAccessException;
 import dataaccess.*;
 import dataaccess.exceptions.AlreadyTakenException;
 import dataaccess.exceptions.BadRequestException;
 import dataaccess.exceptions.UnauthorizedException;
-import handler.JoinGameModel;
+import model.JoinGameModel;
 import model.AuthData;
 import model.GameData;
 

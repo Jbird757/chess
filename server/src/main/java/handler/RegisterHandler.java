@@ -1,7 +1,7 @@
 package handler;
 
 import com.google.gson.Gson;
-import dataaccess.DataAccessException;
+import Exceptions.DataAccessException;
 import dataaccess.exceptions.AlreadyTakenException;
 import dataaccess.exceptions.BadRequestException;
 import model.AuthData;

@@ -1,6 +1,6 @@
 package dataaccess.exceptions;
 
-import dataaccess.DataAccessException;
+import Exceptions.DataAccessException;
 
 public class UnauthorizedException extends DataAccessException {
     public UnauthorizedException(String message) {
