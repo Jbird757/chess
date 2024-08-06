@@ -38,7 +38,6 @@ public class ChessClient {
                     }
                     System.out.println("Registering user...");
                     registerUser(words[1], words[2], words[3]);
-                    postLoginConsole();
                     break;
                 case "login":
                     if (words.length < 3) {
@@ -140,6 +139,7 @@ public class ChessClient {
         try {
             this.authToken = server.registerUser(username, password, email).authToken();
             this.username = username;
+            postLoginConsole();
         } catch (Exception e) {
             if (e.getMessage().equals("403")) {
                 System.out.println("Username already taken");
@@ -180,7 +180,7 @@ public class ChessClient {
             }
 
             System.out.println("\nGame List:");
-            System.out.println("Game ID\t\tGame Name\t\tWhite Player Name\tBlack Player Name");
+            System.out.println("Game Number\t\tGame Name\t\tWhite Player Name\tBlack Player Name");
 
             for (int i = 0; i < games.length; i++) {
                 System.out.println((i+1)+"\t\t\t"+games[i].gameName()+"\t\t\t"+games[i].whiteUsername()+"\t\t\t\t"+games[i].blackUsername());
@@ -198,6 +198,8 @@ public class ChessClient {
         } catch (Exception e) {
             if (e.getMessage().equals("403")) {
                 System.out.println("Color already taken");
+            } else {
+                System.out.println("Error: game ID does not exist");
             }
         }
     }

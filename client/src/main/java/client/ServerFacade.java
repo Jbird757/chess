@@ -49,14 +49,28 @@ public class ServerFacade {
 
     public void joinGame(int gameID, String playerColor, String authToken) throws Exception {
         GameData[] games = listGames(authToken);
+        if (gameID > games.length) {
+            throw new Exception("Game does not exist");
+        }
         JoinGameModel joinInfo = new JoinGameModel(playerColor, games[gameID-1].gameID());
         var path = "/game";
         this.makeRequest("PUT", path, joinInfo, null, authToken);
+
+        DisplayChessBoard boardWhite = new DisplayChessBoard("WHITE");
+        DisplayChessBoard boardBlack = new DisplayChessBoard("BLACK");
+
+        boardWhite.printBoard();
+        System.out.print("\n");
+        boardBlack.printBoard();
     }
 
     public GameData observeGame(int gameID, String authToken) throws Exception {
-        DisplayChessBoard board = new DisplayChessBoard("WHITE");
-        board.printBoard();
+        DisplayChessBoard boardWhite = new DisplayChessBoard("WHITE");
+        DisplayChessBoard boardBlack = new DisplayChessBoard("BLACK");
+
+        boardWhite.printBoard();
+        System.out.print("\n");
+        boardBlack.printBoard();
         return new GameData(1, "whiteplayer", "blackplayer", "game1", new ChessGame());
     }
 
