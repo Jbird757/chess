@@ -9,9 +9,11 @@ public class ChessClient {
     private String username = "LOGGED_OUT";
     private String authToken = null;
     private ServerFacade server;
+    private Scanner scanner;
 
     public ChessClient(String serverURL){
         this.server = new ServerFacade(serverURL);
+        this.scanner = new Scanner(System.in);
     }
 
     public void clientStart() {
@@ -21,7 +23,6 @@ public class ChessClient {
     }
 
     private void preLoginConsole() {
-        Scanner scanner = new Scanner(System.in);
         boolean quit = false;
 
         while (!quit) {
@@ -61,7 +62,6 @@ public class ChessClient {
                     break;
             }
         }
-        scanner.close();
     }
 
     private void postLoginConsole() {
@@ -129,7 +129,6 @@ public class ChessClient {
                     break;
             }
         }
-        scanner.close();
     }
 
     private void printBoard(String playerColor) {
@@ -180,11 +179,13 @@ public class ChessClient {
                 return;
             }
 
+            System.out.println("\nGame List:");
+            System.out.println("Game ID\t\tGame Name\t\tWhite Player Name\tBlack Player Name");
+
             for (int i = 0; i < games.length; i++) {
-                System.out.println("\nGame List:");
-                System.out.println("Game ID\t\tGame Name\t\tWhite Player Name\tBlack Player Name");
-                System.out.println(i+"\t\t"+games[i].gameName()+"\t\t"+games[i].whiteUsername()+"\t\t"+games[i].blackUsername());
+                System.out.println((i+1)+"\t\t\t"+games[i].gameName()+"\t\t\t"+games[i].whiteUsername()+"\t\t\t\t"+games[i].blackUsername());
             }
+
         } catch (Exception e) {
             var msg = e.getMessage();
             System.out.println(msg);
@@ -193,10 +194,11 @@ public class ChessClient {
 
     private void joinGame(int gameID, String playerColor) {
         try {
-            server.joinGame(gameID, playerColor, this.authToken);
+            server.joinGame(gameID, playerColor.toUpperCase(), this.authToken);
         } catch (Exception e) {
-            var msg = e.getMessage();
-            System.out.println(msg);
+            if (e.getMessage().equals("403")) {
+                System.out.println("Color already taken");
+            }
         }
     }
 
@@ -230,12 +232,12 @@ public class ChessClient {
 
     private void printPostLoginHelp() {
         System.out.println("\nCOMMANDS:");
-        System.out.println("create <GAMENAME> \t\tCreates a new game with the specified name");
-        System.out.println("list \t\t\t\t\tDisplays a list of active games");
-        System.out.println("join <ID> [WHITE|BLACK] \t\t\tJoins a game with the specified ID");
-        System.out.println("observe <ID> \t\t\tWatch a game with the specified ID");
-        System.out.println("logout \t\t\t\t\tLogs out the current user");
-        System.out.println("help \t\t\t\t\tView these commands at any time");
+        System.out.println("create <GAMENAME> \t\t\tCreates a new game with the specified name");
+        System.out.println("list \t\t\t\t\t\tDisplays a list of active games");
+        System.out.println("join <ID> [WHITE|BLACK] \tJoins a game with the specified ID");
+        System.out.println("observe <ID> \t\t\t\tWatch a game with the specified ID");
+        System.out.println("logout \t\t\t\t\t\tLogs out the current user");
+        System.out.println("help \t\t\t\t\t\tView these commands at any time");
         System.out.print("\n\n");
     }
 }
