@@ -77,7 +77,7 @@ public class ServerFacadeTests {
     @Test
     public void logoutTestNegative() {
         Assertions.assertThrows(DataAccessException.class, () -> {
-            //Don't know how this could fail
+            serverFacade.logout("user1");
         });
     }
 
@@ -93,7 +93,7 @@ public class ServerFacadeTests {
     @Test
     public void creatGameTestNegative() {
         Assertions.assertThrows(DataAccessException.class, () -> {
-            //Don't know how this could fail
+            serverFacade.createGame("1234", "1234");
         });
     }
 
@@ -113,7 +113,7 @@ public class ServerFacadeTests {
     @Test
     public void listGamesTestNegative() {
         Assertions.assertThrows(DataAccessException.class, () -> {
-            //Don't know how this could fail
+            serverFacade.listGames("1234");
         });
     }
 
