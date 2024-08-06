@@ -1,6 +1,5 @@
 package client;
 
-import Exceptions.DataAccessException;
 import model.AuthData;
 import model.GameData;
 import org.junit.jupiter.api.*;
@@ -42,7 +41,7 @@ public class ServerFacadeTests {
 
     @Test
     public void registerTestNegative() {
-        Assertions.assertThrows(DataAccessException.class, () -> {
+        Assertions.assertThrows(Exception.class, () -> {
             serverFacade.registerUser("user1", "password", "myemail");
             AuthData newAuth = serverFacade.registerUser("user1", "password2", "myemail2");
         });
@@ -59,7 +58,7 @@ public class ServerFacadeTests {
 
     @Test
     public void loginTestNegative() {
-        Assertions.assertThrows(DataAccessException.class, () -> {
+        Assertions.assertThrows(Exception.class, () -> {
             serverFacade.login("user1", "password");
         });
     }
@@ -75,7 +74,7 @@ public class ServerFacadeTests {
 
     @Test
     public void logoutTestNegative() {
-        Assertions.assertThrows(DataAccessException.class, () -> {
+        Assertions.assertThrows(Exception.class, () -> {
             serverFacade.logout("user1");
         });
     }
@@ -91,7 +90,7 @@ public class ServerFacadeTests {
 
     @Test
     public void creatGameTestNegative() {
-        Assertions.assertThrows(DataAccessException.class, () -> {
+        Assertions.assertThrows(Exception.class, () -> {
             serverFacade.createGame("1234", "1234");
         });
     }
@@ -111,7 +110,7 @@ public class ServerFacadeTests {
 
     @Test
     public void listGamesTestNegative() {
-        Assertions.assertThrows(DataAccessException.class, () -> {
+        Assertions.assertThrows(Exception.class, () -> {
             serverFacade.listGames("1234");
         });
     }
@@ -130,7 +129,7 @@ public class ServerFacadeTests {
 
     @Test
     public void joinGameTestNegative() {
-        Assertions.assertThrows(DataAccessException.class, () -> {
+        Assertions.assertThrows(Exception.class, () -> {
             AuthData auth = serverFacade.registerUser("user1", "password", "myemail");
             GameData newGame = serverFacade.createGame("game1", auth.authToken());
             serverFacade.joinGame(1, "WHITE", auth.authToken());

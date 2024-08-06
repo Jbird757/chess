@@ -1,6 +1,6 @@
 package service;
 
-import Exceptions.DataAccessException;
+import dataaccess.DataAccessException;
 import dataaccess.*;
 import dataaccess.exceptions.AlreadyTakenException;
 import dataaccess.exceptions.BadRequestException;

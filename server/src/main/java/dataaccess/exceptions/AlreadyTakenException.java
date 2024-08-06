@@ -1,6 +1,6 @@
 package dataaccess.exceptions;
 
-import Exceptions.DataAccessException;
+import dataaccess.DataAccessException;
 
 public class AlreadyTakenException extends DataAccessException {
     public AlreadyTakenException(String message) {

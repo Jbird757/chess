@@ -1,7 +1,7 @@
 package handler;
 
 import com.google.gson.Gson;
-import Exceptions.DataAccessException;
+import dataaccess.DataAccessException;
 import dataaccess.exceptions.BadRequestException;
 import dataaccess.exceptions.UnauthorizedException;
 import model.GameData;
